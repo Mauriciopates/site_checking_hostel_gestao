@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Pré check-in — Hostel Clean</title>
+<style>
+  :root {
+    --navy: #0C2F48;
+    --azul: #0E6291;
+    --azul-claro: #3E8FB0;
+    --fundo: #FFFFFF;
+    --fundo-app: #F5F7F9;
+    --texto: #0C2F48;
+    --texto-sec: #5A6B7A;
+    --borda: #E2E8ED;
+    --verde: #1E8E5A;
+    --verde-fundo: #E3F5EC;
+    --erro: #C0392B;
+    --aviso-fundo: #FFF7E0;
+    --aviso-borda: #E9D8A6;
+    --aviso-texto: #6B5A1E;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--fundo-app);
+    color: var(--texto);
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .demo {
+    background: var(--aviso-borda);
+    color: #4A3D10;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    padding: 8px 16px;
+  }
+
+  header {
+    background: var(--navy);
+    color: #fff;
+    padding: 20px 16px;
+  }
+  header .marca { font-size: 13px; letter-spacing: 1px; opacity: .75; }
+  header h1 { margin: 4px 0 0; font-size: 20px; font-weight: 700; }
+  header p { margin: 6px 0 0; font-size: 14px; opacity: .8; }
+
+  main { max-width: 640px; margin: 0 auto; padding: 16px; }
+
+  .cartao {
+    background: var(--fundo);
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+    padding: 18px 16px;
+    margin-bottom: 16px;
+  }
+  .cartao h2 {
+    margin: 0 0 4px;
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .cartao .ajuda {
+    margin: 0 0 16px;
+    font-size: 13px;
+    color: var(--texto-sec);
+  }
+
+  label { display: block; font-size: 13px; color: var(--texto-sec); margin-bottom: 4px; }
+  .campo { margin-bottom: 14px; }
+
+  input[type="text"], input[type="date"], select {
+    width: 100%;
+    padding: 11px 12px;
+    font-size: 16px;
+    font-family: inherit;
+    color: var(--texto);
+    background: var(--fundo);
+    border: 1px solid var(--borda);
+    border-radius: 8px;
+    outline: none;
+  }
+  input:focus, select:focus { border-color: var(--azul); }
+  input.invalido, select.invalido { border-color: var(--erro); }
+
+  .erro-campo {
+    display: none;
+    font-size: 12px;
+    color: var(--erro);
+    margin-top: 4px;
+  }
+  .campo.erro .erro-campo { display: block; }
+
+  /* --- aviso de privacidade --- */
+  .aviso-texto {
+    max-height: 240px;
+    overflow-y: auto;
+    border: 1px solid var(--borda);
+    border-radius: 8px;
+    padding: 14px;
+    font-size: 13.5px;
+    background: var(--fundo-app);
+  }
+  .aviso-texto h3 {
+    margin: 14px 0 4px;
+    font-size: 13px;
+    color: var(--navy);
+  }
+  .aviso-texto h3:first-child { margin-top: 0; }
+  .aviso-texto p { margin: 0 0 8px; color: var(--texto-sec); }
+  .aviso-texto table { width: 100%; border-collapse: collapse; margin: 6px 0 10px; }
+  .aviso-texto th, .aviso-texto td {
+    border: 1px solid var(--borda);
+    padding: 6px 8px;
+    text-align: left;
+    font-size: 12px;
+    vertical-align: top;
+  }
+  .aviso-texto th { background: var(--fundo); color: var(--texto-sec); font-size: 11px; }
+
+  /* --- caixas --- */
+  .caixa {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 14px;
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+  .caixa.erro { border-color: var(--erro); }
+  .caixa input[type="checkbox"] {
+    width: 22px; height: 22px; margin: 1px 0 0; flex: 0 0 22px;
+    accent-color: var(--azul);
+  }
+  .caixa .corpo { flex: 1; }
+  .caixa .titulo { font-size: 14.5px; font-weight: 600; display: block; }
+  .caixa .base {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 11px;
+    color: var(--texto-sec);
+    background: var(--fundo-app);
+    border: 1px solid var(--borda);
+    border-radius: 20px;
+    padding: 2px 10px;
+  }
+  .caixa .nota { font-size: 12.5px; color: var(--texto-sec); margin: 4px 0 0; }
+
+  button {
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: inherit;
+    color: #fff;
+    background: var(--azul);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  button:hover { background: var(--azul-claro); }
+
+  .sucesso {
+    display: none;
+    background: var(--verde-fundo);
+    border: 1px solid var(--verde);
+    border-radius: 12px;
+    padding: 20px 16px;
+    text-align: center;
+  }
+  .sucesso h2 { margin: 0 0 6px; font-size: 17px; color: var(--verde); }
+  .sucesso p { margin: 0; font-size: 14px; color: var(--texto-sec); }
+
+  footer {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 0 16px 32px;
+    font-size: 12px;
+    color: var(--texto-sec);
+  }
+</style>
+</head>
+<body>
+
+<div class="demo">DEMONSTRAÇÃO — não introduza dados reais</div>
+
+<header>
+  <div class="marca">HOSTEL CLEAN</div>
+  <h1>Pré check-in</h1>
+  <p>Preencha antes de chegar. Demora cerca de dois minutos.</p>
+</header>
+
+<main>
+  <form id="formulario" novalidate>
+
+    <!-- ============ DADOS ============ -->
+    <section class="cartao">
+      <h2>Os seus dados</h2>
+      <p class="ajuda">
+        Estes são os dados que a lei exige para o boletim de alojamento.
+      </p>
+
+      <div class="campo" data-campo>
+        <label for="nome">Nome completo *</label>
+        <input type="text" id="nome" name="nome" autocomplete="name" required>
+        <span class="erro-campo">Preencha o nome completo.</span>
+      </div>
+
+      <div class="campo" data-campo>
+        <label for="nacionalidade">Nacionalidade *</label>
+        <select id="nacionalidade" name="nacionalidade" required>
+          <option value="">— Escolher —</option>
+        </select>
+        <span class="erro-campo">Escolha a nacionalidade.</span>
+      </div>
+
+      <div class="campo" data-campo id="campo-outra" style="display:none">
+        <label for="nacionalidade_outra">Escreva a nacionalidade *</label>
+        <input type="text" id="nacionalidade_outra" name="nacionalidade_outra">
+        <span class="erro-campo">Escreva a nacionalidade.</span>
+      </div>
+
+      <div class="campo" data-campo>
+        <label for="data_nascimento">Data de nascimento *</label>
+        <input type="date" id="data_nascimento" name="data_nascimento" required>
+        <span class="erro-campo">Indique a data de nascimento.</span>
+      </div>
+
+      <div class="campo" data-campo>
+        <label for="tipo_documento">Tipo de documento *</label>
+        <select id="tipo_documento" name="tipo_documento" required>
+          <option value="">— Escolher —</option>
+          <option>Cartão de Cidadão</option>
+          <option>Passaporte</option>
+          <option>Título de Residência</option>
+          <option>Outro</option>
+        </select>
+        <span class="erro-campo">Escolha o tipo de documento.</span>
+      </div>
+
+      <div class="campo" data-campo>
+        <label for="numero_documento">Número do documento *</label>
+        <input type="text" id="numero_documento" name="numero_documento" required>
+        <span class="erro-campo">Preencha o número do documento.</span>
+      </div>
+
+      <div class="campo" data-campo>
+        <label for="pais_emissor">País emissor do documento *</label>
+        <input type="text" id="pais_emissor" name="pais_emissor"
+               placeholder="ex.: Portugal" required>
+        <span class="erro-campo">Preencha o país emissor.</span>
+      </div>
+
+      <div class="campo" data-campo style="margin-bottom:0">
+        <label for="pais_residencia">País de residência *</label>
+        <input type="text" id="pais_residencia" name="pais_residencia"
+               placeholder="ex.: Portugal" required>
+        <span class="erro-campo">Preencha o país de residência.</span>
+      </div>
+    </section>
+
+    <!-- ============ AVISO ============ -->
+    <section class="cartao">
+      <h2>Tratamento dos seus dados</h2>
+      <p class="ajuda">Informação prestada nos termos do artigo 13.º do RGPD.</p>
+
+      <div class="aviso-texto">
+        <h3>Quem trata os seus dados</h3>
+        <p>
+          «NOME DA EMPRESA», NIPC «NIF», com sede em «MORADA».
+          Contacto para proteção de dados: «EMAIL».
+        </p>
+
+        <h3>Porquê, e com que fundamento</h3>
+        <p>
+          Os seus dados não são recolhidos com base no seu consentimento:
+          são recolhidos porque a lei o exige e porque são necessários
+          para lhe prestar o alojamento que contratou.
+        </p>
+        <table>
+          <tr><th>Finalidade</th><th>Base legal</th><th>Conservação</th></tr>
+          <tr>
+            <td>Boletim de alojamento (hóspedes estrangeiros)</td>
+            <td>Obrigação legal — art. 6.º/1/c. Lei 23/2007, arts. 15.º e 16.º</td>
+            <td>«PRAZO»</td>
+          </tr>
+          <tr>
+            <td>Execução do contrato de alojamento</td>
+            <td>Execução de contrato — art. 6.º/1/b</td>
+            <td>«PRAZO»</td>
+          </tr>
+          <tr>
+            <td>Obrigações fiscais</td>
+            <td>Obrigação legal — art. 6.º/1/c</td>
+            <td>10 anos</td>
+          </tr>
+        </table>
+
+        <h3>A quem são comunicados</h3>
+        <p>
+          Às autoridades competentes pelo controlo de estrangeiros,
+          através do sistema SIBA, quando a lei o exige, e à Autoridade
+          Tributária para efeitos de faturação. Não são transferidos
+          para fora do Espaço Económico Europeu nem usados para
+          publicidade.
+        </p>
+
+        <h3>Os seus direitos</h3>
+        <p>
+          Pode pedir o acesso, a retificação, o apagamento, a limitação
+          do tratamento, a portabilidade, e opor-se ao tratamento
+          (artigos 15.º a 22.º). Enquanto durar a obrigação legal de
+          conservação, não é possível apagar os dados comunicados às
+          autoridades. Pode reclamar junto da CNPD (www.cnpd.pt).
+        </p>
+
+        <h3>É obrigatório fornecer estes dados?</h3>
+        <p>
+          Sim. Sem eles não é possível formalizar a estadia.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ AS TRÊS CAIXAS ============ -->
+    <section class="cartao">
+      <h2>Confirmações</h2>
+      <p class="ajuda">
+        As três têm naturezas diferentes — só as duas primeiras são
+        necessárias para a estadia.
+      </p>
+
+      <label class="caixa" data-obrigatoria>
+        <input type="checkbox" id="informado" name="informado">
+        <span class="corpo">
+          <span class="titulo">
+            Declaro ter sido informado sobre o tratamento dos meus dados. *
+          </span>
+          <span class="base">Tomada de conhecimento · artigo 13.º</span>
+        </span>
+      </label>
+
+      <label class="caixa" data-obrigatoria>
+        <input type="checkbox" id="regulamento" name="regulamento">
+        <span class="corpo">
+          <span class="titulo">
+            Aceito o regulamento da casa e a política de cancelamento. *
+          </span>
+          <span class="base">Aceitação contratual</span>
+        </span>
+      </label>
+
+      <label class="caixa" style="margin-bottom:0">
+        <input type="checkbox" id="comunicacoes" name="comunicacoes">
+        <span class="corpo">
+          <span class="titulo">
+            Aceito receber novidades e promoções por email.
+          </span>
+          <p class="nota">
+            Opcional. Pode retirar esta autorização a qualquer momento,
+            sem qualquer consequência para a sua estadia.
+          </p>
+          <span class="base">Consentimento · artigo 6.º/1/a — revogável</span>
+        </span>
+      </label>
+    </section>
+
+    <button type="submit">Concluir pré check-in</button>
+  </form>
+
+  <section class="sucesso" id="sucesso">
+    <h2>Pré check-in concluído</h2>
+    <p id="sucesso-detalhe"></p>
+  </section>
+</main>
+
+<footer>
+  Versão do aviso de privacidade: <span id="versao-rodape"></span>.
+  Esta página não guarda os seus dados em servidor nenhum enquanto a
+  preenche.
+</footer>
+
+<script>
+// =====================================================================
+// CONFIGURAÇÃO
+// =====================================================================
+// VERSAO_AVISO acompanha a coluna `versao_texto` da tabela
+// `avisos_privacidade`. Sempre que o texto acima mudar, sobe-se aqui,
+// e os registos antigos continuam a apontar para a redação certa.
+const VERSAO_AVISO = "1.0";
+
+// ENVIO: "ficheiro" gera um ficheiro no dispositivo (fase de
+// demonstração); "api" faz POST para o servidor. Trocar esta linha é a
+// única alteração necessária quando a API na VM estiver de pé — o resto
+// da página fica igual.
+const ENVIO = "ficheiro";
+const URL_API = "https://«DOMINIO»/api/pre-checkin";
+
+const NACIONALIDADES = [
+  "Portuguesa", "Brasileira", "Espanhola", "Francesa", "Alemã",
+  "Britânica", "Italiana", "Neerlandesa", "Belga", "Suíça", "Austríaca",
+  "Irlandesa", "Polaca", "Sueca", "Norueguesa", "Dinamarquesa", "Russa",
+  "Ucraniana", "Norte-americana", "Canadiana", "Mexicana", "Chinesa",
+  "Japonesa", "Sul-coreana", "Indiana", "Australiana", "Angolana",
+  "Moçambicana", "Cabo-verdiana",
+];
+const OUTRA = "Outra";
+
+// =====================================================================
+// ARRANQUE
+// =====================================================================
+const seletorNac = document.getElementById("nacionalidade");
+NACIONALIDADES.concat([OUTRA]).forEach((n) => {
+  const opcao = document.createElement("option");
+  opcao.textContent = n;
+  seletorNac.appendChild(opcao);
+});
+
+document.getElementById("versao-rodape").textContent = VERSAO_AVISO;
+
+const campoOutra = document.getElementById("campo-outra");
+seletorNac.addEventListener("change", () => {
+  campoOutra.style.display = seletorNac.value === OUTRA ? "" : "none";
+});
+
+// O token identifica a reserva e vem no link enviado ao hóspede
+// (…/index.html?t=XXXX). Sem token, a página funciona à mesma para
+// demonstração, mas a API deve recusar.
+const token = new URLSearchParams(location.search).get("t") || "";
+
+// =====================================================================
+// VALIDAÇÃO
+// =====================================================================
+function marcar(elemento, invalido) {
+  elemento.classList.toggle("erro", invalido);
+  const campo = elemento.querySelector("input, select");
+  if (campo) { campo.classList.toggle("invalido", invalido); }
+}
+
+function validar() {
+  let primeiroErro = null;
+
+  document.querySelectorAll("[data-campo]").forEach((campo) => {
+    if (campo.style.display === "none") { marcar(campo, false); return; }
+    const entrada = campo.querySelector("input, select");
+    const vazio = !entrada.value.trim();
+    marcar(campo, vazio);
+    if (vazio && !primeiroErro) { primeiroErro = campo; }
+  });
+
+  document.querySelectorAll("[data-obrigatoria]").forEach((caixa) => {
+    const marcada = caixa.querySelector("input").checked;
+    caixa.classList.toggle("erro", !marcada);
+    if (!marcada && !primeiroErro) { primeiroErro = caixa; }
+  });
+
+  if (primeiroErro) {
+    primeiroErro.scrollIntoView({ behavior: "smooth", block: "center" });
+    return false;
+  }
+  return true;
+}
+
+// =====================================================================
+// RECOLHA E ENVIO
+// =====================================================================
+function recolher() {
+  const nac = seletorNac.value === OUTRA
+    ? document.getElementById("nacionalidade_outra").value.trim()
+    : seletorNac.value;
+
+  return {
+    token: token,
+    versao_aviso: VERSAO_AVISO,
+    submetido_em: new Date().toISOString(),
+    cliente: {
+      nome: document.getElementById("nome").value.trim(),
+      nacionalidade: nac,
+      data_nascimento: document.getElementById("data_nascimento").value,
+      tipo_documento: document.getElementById("tipo_documento").value,
+      numero_documento:
+        document.getElementById("numero_documento").value.trim(),
+      pais_emissor_documento:
+        document.getElementById("pais_emissor").value.trim(),
+      pais_residencia:
+        document.getElementById("pais_residencia").value.trim(),
+    },
+    // Três estados distintos, não um só "aceitou tudo": é isto que
+    // permite provar o que foi informação, o que foi contrato e o que
+    // foi consentimento revogável.
+    confirmacoes: {
+      informado_privacidade: document.getElementById("informado").checked,
+      aceitou_regulamento: document.getElementById("regulamento").checked,
+      consente_comunicacoes:
+        document.getElementById("comunicacoes").checked,
+    },
+  };
+}
+
+function gerarFicheiro(dados) {
+  const texto = JSON.stringify(dados, null, 2);
+  const blob = new Blob([texto], { type: "application/json" });
+  const ligacao = document.createElement("a");
+  const nome = (dados.cliente.nome || "hospede")
+    .toLowerCase().replace(/[^a-z0-9]+/g, "_").slice(0, 40);
+
+  ligacao.href = URL.createObjectURL(blob);
+  ligacao.download = "pre_checkin_" + nome + ".json";
+  ligacao.click();
+  URL.revokeObjectURL(ligacao.href);
+}
+
+async function enviarApi(dados) {
+  const resposta = await fetch(URL_API, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(dados),
+  });
+  if (!resposta.ok) { throw new Error("resposta " + resposta.status); }
+}
+
+function concluir(detalhe) {
+  document.getElementById("formulario").style.display = "none";
+  document.getElementById("sucesso-detalhe").textContent = detalhe;
+  document.getElementById("sucesso").style.display = "block";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+document.getElementById("formulario").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  if (!validar()) { return; }
+
+  const dados = recolher();
+
+  if (ENVIO === "ficheiro") {
+    gerarFicheiro(dados);
+    concluir("Foi gerado um ficheiro no seu dispositivo. "
+             + "Envie-o para o alojamento ou apresente-o à chegada.");
+    return;
+  }
+
+  try {
+    await enviarApi(dados);
+    concluir("Os seus dados ficaram registados. "
+             + "Até breve.");
+  } catch (erro) {
+    alert("Não foi possível enviar. Tente novamente mais tarde.");
+  }
+});
+</script>
+
+</body>
+</html>
