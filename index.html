@@ -5,11 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>Pré check-in — Hostel Clean</title>
+
+<!-- Tipografia -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
   :root {
     --navy: #0C2F48;
     --azul: #0E6291;
     --azul-claro: #3E8FB0;
+    --dourado: #C9A227;
+    --dourado-fundo: #FBF4DE;
     --fundo: #FFFFFF;
     --fundo-app: #F5F7F9;
     --texto: #0C2F48;
@@ -21,181 +29,288 @@
     --aviso-fundo: #FFF7E0;
     --aviso-borda: #E9D8A6;
     --aviso-texto: #6B5A1E;
+    --sombra: 0 1px 2px rgba(12, 47, 72, .04), 0 6px 18px rgba(12, 47, 72, .05);
   }
 
   * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
 
   body {
     margin: 0;
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
     background: var(--fundo-app);
     color: var(--texto);
     font-size: 16px;
-    line-height: 1.5;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
   }
 
+  /* ---------- HERO ---------- */
+  .hero {
+    position: relative;
+    min-height: 340px;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center;
+    color: #fff;
+    padding: 80px 24px 70px;
+    background-image:
+      linear-gradient(180deg, rgba(12,47,72,.45) 0%, rgba(12,47,72,.65) 60%, rgba(12,47,72,.85) 100%),
+      url("img/ponte-d-luis.jpg");
+    background-size: cover;
+    background-position: center 55%;
+    background-repeat: no-repeat;
+  }
+  .hero .marca {
+    display: inline-block;
+    font-size: 12px; letter-spacing: 3px;
+    opacity: .85; margin-bottom: 14px;
+  }
+  .hero h1 {
+    margin: 0;
+    font-size: clamp(32px, 5.2vw, 54px);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+    text-shadow: 0 2px 16px rgba(0,0,0,.35);
+  }
+  .hero .linha {
+    width: 60px; height: 2px; background: rgba(255,255,255,.75);
+    margin: 22px auto 18px;
+  }
+  .hero .subtitulo {
+    margin: 0;
+    font-size: 14px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    font-weight: 500;
+    opacity: .9;
+  }
+
+  /* ---------- AVISO DEMO ---------- */
   .demo {
     background: var(--aviso-borda);
     color: #4A3D10;
     font-size: 13px;
     font-weight: 600;
     text-align: center;
-    padding: 8px 16px;
+    padding: 10px 16px;
+    letter-spacing: .2px;
   }
 
-  header {
-    background: var(--navy);
-    color: #fff;
-    padding: 20px 16px;
+  /* ---------- CONTEÚDO ---------- */
+  main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 24px 24px 48px;
   }
-  header .marca { font-size: 13px; letter-spacing: 1px; opacity: .75; }
-  header h1 { margin: 4px 0 0; font-size: 20px; font-weight: 700; }
-  header p { margin: 6px 0 0; font-size: 14px; opacity: .8; }
-
-  main { max-width: 640px; margin: 0 auto; padding: 16px; }
+  @media (min-width: 1100px) {
+    main { max-width: 1040px; }
+  }
 
   .cartao {
     background: var(--fundo);
     border: 1px solid var(--borda);
-    border-radius: 12px;
-    padding: 18px 16px;
-    margin-bottom: 16px;
+    border-radius: 14px;
+    padding: 26px 28px;
+    margin-bottom: 20px;
+    box-shadow: var(--sombra);
   }
   .cartao h2 {
-    margin: 0 0 4px;
-    font-size: 15px;
+    margin: 0 0 6px;
+    font-size: 17px;
     font-weight: 700;
+    letter-spacing: .1px;
+    color: var(--navy);
   }
   .cartao .ajuda {
-    margin: 0 0 16px;
-    font-size: 13px;
+    margin: 0 0 22px;
+    font-size: 14px;
     color: var(--texto-sec);
   }
 
-  label { display: block; font-size: 13px; color: var(--texto-sec); margin-bottom: 4px; }
-  .campo { margin-bottom: 14px; }
+  /* ---------- GRELHA DE CAMPOS ---------- */
+  .campos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 20px;
+  }
+  @media (max-width: 640px) {
+    .campos { grid-template-columns: 1fr; gap: 14px; }
+  }
+
+  label {
+    display: block;
+    font-size: 13.5px;
+    color: var(--texto-sec);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .campo { margin: 0; }
+  .campo.largo { grid-column: 1 / -1; }
 
   input[type="text"], input[type="date"], select {
     width: 100%;
-    padding: 11px 12px;
+    padding: 12px 14px;
     font-size: 16px;
     font-family: inherit;
     color: var(--texto);
     background: var(--fundo);
     border: 1px solid var(--borda);
-    border-radius: 8px;
+    border-radius: 10px;
     outline: none;
+    transition: border-color .15s, box-shadow .15s;
   }
-  input:focus, select:focus { border-color: var(--azul); }
+  input:focus, select:focus {
+    border-color: var(--azul);
+    box-shadow: 0 0 0 3px rgba(14,98,145,.12);
+  }
   input.invalido, select.invalido { border-color: var(--erro); }
 
   .erro-campo {
     display: none;
-    font-size: 12px;
+    font-size: 12.5px;
     color: var(--erro);
-    margin-top: 4px;
+    margin-top: 5px;
   }
   .campo.erro .erro-campo { display: block; }
 
-  /* --- aviso de privacidade --- */
+  /* ---------- AVISO PRIVACIDADE ---------- */
   .aviso-texto {
-    max-height: 240px;
+    max-height: 300px;
     overflow-y: auto;
     border: 1px solid var(--borda);
-    border-radius: 8px;
-    padding: 14px;
-    font-size: 13.5px;
+    border-radius: 10px;
+    padding: 18px 20px;
+    font-size: 14px;
     background: var(--fundo-app);
+    line-height: 1.6;
   }
   .aviso-texto h3 {
-    margin: 14px 0 4px;
-    font-size: 13px;
+    margin: 16px 0 6px;
+    font-size: 13.5px;
     color: var(--navy);
+    font-weight: 700;
   }
   .aviso-texto h3:first-child { margin-top: 0; }
-  .aviso-texto p { margin: 0 0 8px; color: var(--texto-sec); }
-  .aviso-texto table { width: 100%; border-collapse: collapse; margin: 6px 0 10px; }
+  .aviso-texto p { margin: 0 0 10px; color: var(--texto-sec); }
+  .aviso-texto table { width: 100%; border-collapse: collapse; margin: 8px 0 12px; }
   .aviso-texto th, .aviso-texto td {
     border: 1px solid var(--borda);
-    padding: 6px 8px;
+    padding: 8px 10px;
     text-align: left;
-    font-size: 12px;
+    font-size: 12.5px;
     vertical-align: top;
   }
-  .aviso-texto th { background: var(--fundo); color: var(--texto-sec); font-size: 11px; }
+  .aviso-texto th { background: var(--fundo); color: var(--texto-sec); font-size: 11.5px; }
 
-  /* --- caixas --- */
+  /* ---------- CAIXAS DE CONFIRMAÇÃO ---------- */
   .caixa {
     display: flex;
-    gap: 12px;
+    gap: 14px;
     align-items: flex-start;
-    padding: 14px;
+    padding: 16px 18px;
     border: 1px solid var(--borda);
-    border-radius: 10px;
-    margin-bottom: 10px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    transition: border-color .15s, background .15s;
   }
+  .caixa:hover { border-color: #d3dae1; }
   .caixa.erro { border-color: var(--erro); }
   .caixa input[type="checkbox"] {
     width: 22px; height: 22px; margin: 1px 0 0; flex: 0 0 22px;
     accent-color: var(--azul);
+    cursor: pointer;
   }
   .caixa .corpo { flex: 1; }
-  .caixa .titulo { font-size: 14.5px; font-weight: 600; display: block; }
+  .caixa .titulo { font-size: 15px; font-weight: 600; display: block; color: var(--navy); }
   .caixa .base {
     display: inline-block;
-    margin-top: 6px;
-    font-size: 11px;
+    margin-top: 8px;
+    font-size: 11.5px;
     color: var(--texto-sec);
     background: var(--fundo-app);
     border: 1px solid var(--borda);
     border-radius: 20px;
-    padding: 2px 10px;
+    padding: 3px 12px;
   }
-  .caixa .nota { font-size: 12.5px; color: var(--texto-sec); margin: 4px 0 0; }
+  .caixa .nota { font-size: 13px; color: var(--texto-sec); margin: 6px 0 0; }
 
-  button {
+  /* ---------- BOTÃO PRINCIPAL ---------- */
+  button[type="submit"] {
     width: 100%;
-    padding: 15px;
-    font-size: 16px;
+    padding: 17px;
+    font-size: 16.5px;
     font-weight: 600;
     font-family: inherit;
     color: #fff;
     background: var(--azul);
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
     cursor: pointer;
+    letter-spacing: .2px;
+    transition: background .15s, transform .12s;
+    box-shadow: 0 4px 14px rgba(14,98,145,.22);
   }
-  button:hover { background: var(--azul-claro); }
+  button[type="submit"]:hover {
+    background: var(--azul-claro);
+    transform: translateY(-1px);
+  }
 
+  /* ---------- SUCESSO ---------- */
   .sucesso {
     display: none;
     background: var(--verde-fundo);
     border: 1px solid var(--verde);
-    border-radius: 12px;
-    padding: 20px 16px;
+    border-radius: 14px;
+    padding: 28px 24px;
     text-align: center;
+    box-shadow: var(--sombra);
   }
-  .sucesso h2 { margin: 0 0 6px; font-size: 17px; color: var(--verde); }
-  .sucesso p { margin: 0; font-size: 14px; color: var(--texto-sec); }
+  .sucesso h2 { margin: 0 0 8px; font-size: 20px; color: var(--verde); }
+  .sucesso p { margin: 0; font-size: 15px; color: var(--texto-sec); }
+
+  .botao-livro {
+    display: inline-block;
+    margin-top: 18px;
+    padding: 14px 22px;
+    background: var(--azul);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 15px;
+    transition: background .15s, transform .12s;
+  }
+  .botao-livro:hover { background: var(--azul-claro); transform: translateY(-1px); }
 
   footer {
-    max-width: 640px;
+    max-width: 1040px;
     margin: 0 auto;
-    padding: 0 16px 32px;
-    font-size: 12px;
+    padding: 0 24px 48px;
+    font-size: 12.5px;
     color: var(--texto-sec);
+    text-align: center;
+  }
+
+  @media (max-width: 480px) {
+    .hero { min-height: 260px; padding: 60px 18px 50px; }
+    .cartao { padding: 22px 20px; }
   }
 </style>
 </head>
 <body>
 
-<div class="demo">DEMONSTRAÇÃO — não introduza dados reais</div>
-
-<header>
-  <div class="marca">HOSTEL CLEAN</div>
-  <h1>Pré check-in</h1>
-  <p>Preencha antes de chegar. Demora cerca de dois minutos.</p>
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div>
+    <span class="marca">HOSTEL CLEAN</span>
+    <h1>Pré check-in</h1>
+    <div class="linha" aria-hidden="true"></div>
+    <p class="subtitulo">Guia da sua estadia</p>
+  </div>
 </header>
+
+<div class="demo">DEMONSTRAÇÃO — não introduza dados reais</div>
 
 <main>
   <form id="formulario" novalidate>
@@ -207,62 +322,64 @@
         Estes são os dados que a lei exige para o boletim de alojamento.
       </p>
 
-      <div class="campo" data-campo>
-        <label for="nome">Nome completo *</label>
-        <input type="text" id="nome" name="nome" autocomplete="name" required>
-        <span class="erro-campo">Preencha o nome completo.</span>
-      </div>
+      <div class="campos">
+        <div class="campo largo" data-campo>
+          <label for="nome">Nome completo *</label>
+          <input type="text" id="nome" name="nome" autocomplete="name" required>
+          <span class="erro-campo">Preencha o nome completo.</span>
+        </div>
 
-      <div class="campo" data-campo>
-        <label for="nacionalidade">Nacionalidade *</label>
-        <select id="nacionalidade" name="nacionalidade" required>
-          <option value="">— Escolher —</option>
-        </select>
-        <span class="erro-campo">Escolha a nacionalidade.</span>
-      </div>
+        <div class="campo" data-campo>
+          <label for="nacionalidade">Nacionalidade *</label>
+          <select id="nacionalidade" name="nacionalidade" required>
+            <option value="">— Escolher —</option>
+          </select>
+          <span class="erro-campo">Escolha a nacionalidade.</span>
+        </div>
 
-      <div class="campo" data-campo id="campo-outra" style="display:none">
-        <label for="nacionalidade_outra">Escreva a nacionalidade *</label>
-        <input type="text" id="nacionalidade_outra" name="nacionalidade_outra">
-        <span class="erro-campo">Escreva a nacionalidade.</span>
-      </div>
+        <div class="campo" data-campo id="campo-outra" style="display:none">
+          <label for="nacionalidade_outra">Escreva a nacionalidade *</label>
+          <input type="text" id="nacionalidade_outra" name="nacionalidade_outra">
+          <span class="erro-campo">Escreva a nacionalidade.</span>
+        </div>
 
-      <div class="campo" data-campo>
-        <label for="data_nascimento">Data de nascimento *</label>
-        <input type="date" id="data_nascimento" name="data_nascimento" required>
-        <span class="erro-campo">Indique a data de nascimento.</span>
-      </div>
+        <div class="campo" data-campo>
+          <label for="data_nascimento">Data de nascimento *</label>
+          <input type="date" id="data_nascimento" name="data_nascimento" required>
+          <span class="erro-campo">Indique a data de nascimento.</span>
+        </div>
 
-      <div class="campo" data-campo>
-        <label for="tipo_documento">Tipo de documento *</label>
-        <select id="tipo_documento" name="tipo_documento" required>
-          <option value="">— Escolher —</option>
-          <option>Cartão de Cidadão</option>
-          <option>Passaporte</option>
-          <option>Título de Residência</option>
-          <option>Outro</option>
-        </select>
-        <span class="erro-campo">Escolha o tipo de documento.</span>
-      </div>
+        <div class="campo" data-campo>
+          <label for="tipo_documento">Tipo de documento *</label>
+          <select id="tipo_documento" name="tipo_documento" required>
+            <option value="">— Escolher —</option>
+            <option>Cartão de Cidadão</option>
+            <option>Passaporte</option>
+            <option>Título de Residência</option>
+            <option>Outro</option>
+          </select>
+          <span class="erro-campo">Escolha o tipo de documento.</span>
+        </div>
 
-      <div class="campo" data-campo>
-        <label for="numero_documento">Número do documento *</label>
-        <input type="text" id="numero_documento" name="numero_documento" required>
-        <span class="erro-campo">Preencha o número do documento.</span>
-      </div>
+        <div class="campo" data-campo>
+          <label for="numero_documento">Número do documento *</label>
+          <input type="text" id="numero_documento" name="numero_documento" required>
+          <span class="erro-campo">Preencha o número do documento.</span>
+        </div>
 
-      <div class="campo" data-campo>
-        <label for="pais_emissor">País emissor do documento *</label>
-        <input type="text" id="pais_emissor" name="pais_emissor"
-               placeholder="ex.: Portugal" required>
-        <span class="erro-campo">Preencha o país emissor.</span>
-      </div>
+        <div class="campo" data-campo>
+          <label for="pais_emissor">País emissor do documento *</label>
+          <input type="text" id="pais_emissor" name="pais_emissor"
+                 placeholder="ex.: Portugal" required>
+          <span class="erro-campo">Preencha o país emissor.</span>
+        </div>
 
-      <div class="campo" data-campo style="margin-bottom:0">
-        <label for="pais_residencia">País de residência *</label>
-        <input type="text" id="pais_residencia" name="pais_residencia"
-               placeholder="ex.: Portugal" required>
-        <span class="erro-campo">Preencha o país de residência.</span>
+        <div class="campo largo" data-campo>
+          <label for="pais_residencia">País de residência *</label>
+          <input type="text" id="pais_residencia" name="pais_residencia"
+                 placeholder="ex.: Portugal" required>
+          <span class="erro-campo">Preencha o país de residência.</span>
+        </div>
       </div>
     </section>
 
@@ -377,6 +494,9 @@
   <section class="sucesso" id="sucesso">
     <h2>Pré check-in concluído</h2>
     <p id="sucesso-detalhe"></p>
+    <a id="link-livro" class="botao-livro" href="livro.html">
+      Ver informações da estadia →
+    </a>
   </section>
 </main>
 
@@ -390,15 +510,10 @@
 // =====================================================================
 // CONFIGURAÇÃO
 // =====================================================================
-// VERSAO_AVISO acompanha a coluna `versao_texto` da tabela
-// `avisos_privacidade`. Sempre que o texto acima mudar, sobe-se aqui,
-// e os registos antigos continuam a apontar para a redação certa.
 const VERSAO_AVISO = "1.0";
 
-// ENVIO: "ficheiro" gera um ficheiro no dispositivo (fase de
-// demonstração); "api" faz POST para o servidor. Trocar esta linha é a
-// única alteração necessária quando a API na VM estiver de pé — o resto
-// da página fica igual.
+// "ficheiro" gera um ficheiro no dispositivo (fase de demonstração);
+// "api" faz POST para o servidor.
 const ENVIO = "ficheiro";
 const URL_API = "https://«DOMINIO»/api/pre-checkin";
 
@@ -429,9 +544,6 @@ seletorNac.addEventListener("change", () => {
   campoOutra.style.display = seletorNac.value === OUTRA ? "" : "none";
 });
 
-// O token identifica a reserva e vem no link enviado ao hóspede
-// (…/index.html?t=XXXX). Sem token, a página funciona à mesma para
-// demonstração, mas a API deve recusar.
 const token = new URLSearchParams(location.search).get("t") || "";
 
 // =====================================================================
@@ -491,9 +603,6 @@ function recolher() {
       pais_residencia:
         document.getElementById("pais_residencia").value.trim(),
     },
-    // Três estados distintos, não um só "aceitou tudo": é isto que
-    // permite provar o que foi informação, o que foi contrato e o que
-    // foi consentimento revogável.
     confirmacoes: {
       informado_privacidade: document.getElementById("informado").checked,
       aceitou_regulamento: document.getElementById("regulamento").checked,
@@ -528,6 +637,10 @@ async function enviarApi(dados) {
 function concluir(detalhe) {
   document.getElementById("formulario").style.display = "none";
   document.getElementById("sucesso-detalhe").textContent = detalhe;
+
+  const link = document.getElementById("link-livro");
+  link.href = "livro.html" + (token ? "?t=" + encodeURIComponent(token) : "");
+
   document.getElementById("sucesso").style.display = "block";
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
@@ -547,8 +660,7 @@ document.getElementById("formulario").addEventListener("submit", async (e) => {
 
   try {
     await enviarApi(dados);
-    concluir("Os seus dados ficaram registados. "
-             + "Até breve.");
+    concluir("Os seus dados ficaram registados. Até breve.");
   } catch (erro) {
     alert("Não foi possível enviar. Tente novamente mais tarde.");
   }

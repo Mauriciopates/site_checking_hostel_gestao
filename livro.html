@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Livro de informações — Hostel Clean</title>
+
+<!-- Tipografia -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --navy: #0C2F48;
+    --azul: #0E6291;
+    --azul-claro: #3E8FB0;
+    --dourado: #C9A227;
+    --dourado-fundo: #FBF4DE;
+    --fundo: #FFFFFF;
+    --fundo-app: #F5F7F9;
+    --texto: #0C2F48;
+    --texto-sec: #5A6B7A;
+    --borda: #E2E8ED;
+    --verde: #1E8E5A;
+    --sombra: 0 1px 2px rgba(12, 47, 72, .04), 0 6px 18px rgba(12, 47, 72, .05);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--fundo-app);
+    color: var(--texto);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    position: relative;
+    min-height: 340px;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center;
+    color: #fff;
+    padding: 80px 24px 70px;
+    background-image:
+      linear-gradient(180deg, rgba(12,47,72,.45) 0%, rgba(12,47,72,.65) 60%, rgba(12,47,72,.85) 100%),
+      url("img/ponte-d-luis.jpg");
+    background-size: cover;
+    background-position: center 55%;
+    background-repeat: no-repeat;
+  }
+  .hero .marca {
+    display: inline-block;
+    font-size: 12px; letter-spacing: 3px;
+    opacity: .85; margin-bottom: 14px;
+  }
+  .hero h1 {
+    margin: 0;
+    font-size: clamp(34px, 5.5vw, 58px);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+    text-shadow: 0 2px 16px rgba(0,0,0,.35);
+  }
+  .hero .linha {
+    width: 60px; height: 2px; background: rgba(255,255,255,.75);
+    margin: 22px auto 18px;
+  }
+  .hero .subtitulo {
+    margin: 0;
+    font-size: 14px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    font-weight: 500;
+    opacity: .9;
+  }
+  .hero .apto {
+    display: inline-block; margin-top: 22px;
+    font-size: 12.5px;
+    background: rgba(255,255,255,.14);
+    border: 1px solid rgba(255,255,255,.22);
+    padding: 6px 16px; border-radius: 999px;
+    backdrop-filter: blur(4px);
+  }
+
+  /* ---------- SELETOR DE IDIOMA ---------- */
+  .idiomas {
+    display: flex; justify-content: center; gap: 22px;
+    padding: 20px 0 8px;
+    font-size: 14px; letter-spacing: 1.5px;
+  }
+  .idiomas button {
+    background: none; border: none; cursor: pointer;
+    font: inherit; color: var(--texto-sec);
+    padding: 6px 2px 8px;
+    border-bottom: 2px solid transparent;
+    transition: color .15s, border-color .15s;
+  }
+  .idiomas button:hover { color: var(--azul); }
+  .idiomas button.ativo {
+    color: var(--navy); border-bottom-color: var(--dourado);
+    font-weight: 700;
+  }
+
+  /* ---------- CONTEÚDO ---------- */
+  main {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 12px 24px 64px;
+  }
+  @media (min-width: 1240px) {
+    main { max-width: 1180px; }
+  }
+
+  /* ---------- CONTACTOS ---------- */
+  .contactos {
+    background: var(--fundo);
+    border: 1px solid var(--borda);
+    border-radius: 14px;
+    padding: 22px 24px;
+    margin: 18px 0 18px;
+    box-shadow: var(--sombra);
+  }
+  .contactos h3 {
+    margin: 0 0 14px;
+    font-size: 15px;
+    color: var(--navy);
+    font-weight: 700;
+    letter-spacing: .2px;
+  }
+  .contactos .grelha {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 28px;
+  }
+  @media (max-width: 640px) {
+    .contactos .grelha { grid-template-columns: 1fr; }
+  }
+  .contactos p {
+    margin: 0;
+    font-size: 14.5px;
+    color: var(--texto-sec);
+  }
+  .contactos a { color: var(--azul); text-decoration: none; font-weight: 500; }
+  .contactos a:hover { text-decoration: underline; }
+  .contactos .nota {
+    margin-top: 14px;
+    font-size: 13.5px;
+    color: var(--texto-sec);
+    grid-column: 1 / -1;
+  }
+
+  /* ---------- ATALHOS RÁPIDOS ---------- */
+  .atalhos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin: 0 0 28px;
+  }
+  @media (max-width: 520px) {
+    .atalhos { grid-template-columns: 1fr; }
+  }
+  .atalhos a, .atalhos button {
+    display: flex; align-items: center; justify-content: center;
+    gap: 14px;
+    padding: 22px 20px;
+    background: var(--dourado-fundo);
+    border: 1px solid rgba(201,162,39,.55);
+    border-radius: 14px;
+    text-decoration: none;
+    color: #6B5416;
+    font-weight: 600;
+    font-size: 16px;
+    font-family: inherit;
+    cursor: pointer;
+    text-align: center;
+    transition: transform .12s, box-shadow .12s, filter .12s;
+    box-shadow: 0 1px 2px rgba(201,162,39,.10);
+  }
+  .atalhos a:hover, .atalhos button:hover {
+    filter: brightness(0.98);
+    box-shadow: 0 6px 18px rgba(201,162,39,.18);
+    transform: translateY(-1px);
+  }
+  .atalhos .icone { font-size: 26px; line-height: 1; }
+
+  /* ---------- GRUPOS ---------- */
+  .grupo {
+    background: var(--dourado-fundo);
+    color: #7A5F17;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: .3px;
+    padding: 14px 20px;
+    border-radius: 12px;
+    margin: 28px 0 12px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .grupo .icone { font-size: 17px; }
+
+  /* ---------- ACORDEÕES ---------- */
+  details.seccao {
+    background: var(--fundo);
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    box-shadow: var(--sombra);
+    transition: border-color .15s;
+  }
+  details.seccao:hover { border-color: #d3dae1; }
+  details.seccao > summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 18px 22px;
+    font-size: 15.5px;
+    font-weight: 600;
+    display: flex; justify-content: space-between; align-items: center;
+    color: var(--navy);
+    letter-spacing: .1px;
+  }
+  details.seccao > summary::-webkit-details-marker { display: none; }
+  details.seccao > summary::after {
+    content: "▾";
+    color: var(--dourado);
+    font-size: 15px;
+    transition: transform .2s ease;
+  }
+  details.seccao[open] > summary::after { transform: rotate(180deg); }
+  details.seccao .conteudo {
+    padding: 2px 22px 20px;
+    font-size: 15px;
+    color: var(--texto-sec);
+    line-height: 1.65;
+  }
+  details.seccao .conteudo p { margin: 0 0 12px; }
+  details.seccao .conteudo p:last-child { margin-bottom: 0; }
+  details.seccao .conteudo strong { color: var(--texto); font-weight: 600; }
+
+  table.horarios {
+    width: 100%; border-collapse: collapse; margin: 6px 0 6px;
+  }
+  table.horarios th, table.horarios td {
+    border: 1px solid var(--borda);
+    padding: 12px 16px; text-align: left;
+    font-size: 14.5px; vertical-align: top;
+  }
+  table.horarios th {
+    background: var(--fundo-app);
+    color: var(--texto-sec); font-weight: 600;
+    width: 38%;
+  }
+  table.horarios td { color: var(--texto-sec); }
+
+  /* ---------- CONTACTO RÁPIDO ---------- */
+  .contacto-rapido {
+    display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px;
+  }
+  .contacto-rapido a {
+    flex: 1 1 auto; min-width: 200px;
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 10px;
+    padding: 14px 18px;
+    background: var(--azul); color: #fff;
+    text-decoration: none; border-radius: 10px;
+    font-weight: 600; font-size: 14.5px;
+    transition: filter .12s, transform .12s;
+  }
+  .contacto-rapido a.telefone { background: var(--verde); }
+  .contacto-rapido a:hover { filter: brightness(1.08); transform: translateY(-1px); }
+
+  ul.limpa { list-style: none; padding: 0; margin: 0 0 12px; }
+  ul.limpa li {
+    padding: 7px 0 7px 24px; position: relative;
+  }
+  ul.limpa li::before {
+    content: "•"; color: var(--dourado);
+    position: absolute; left: 8px; top: 7px; font-weight: 700;
+  }
+
+  /* ---------- RODAPÉ ---------- */
+  footer {
+    max-width: 1180px; margin: 0 auto;
+    padding: 0 24px 48px;
+    font-size: 13px; color: var(--texto-sec); text-align: center;
+  }
+  footer a { color: var(--azul); }
+
+  @media (max-width: 480px) {
+    details.seccao > summary { font-size: 14.5px; padding: 16px 18px; }
+    details.seccao .conteudo { padding: 2px 18px 18px; }
+    table.horarios th, table.horarios td { padding: 10px 12px; font-size: 13.5px; }
+    .hero { min-height: 260px; padding: 60px 18px 50px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div>
+    <span class="marca">HOSTEL CLEAN</span>
+    <h1 data-i18n="titulo_livro">Livro de Informações</h1>
+    <div class="linha" aria-hidden="true"></div>
+    <p class="subtitulo" data-i18n="subtitulo_livro">Guia da sua estadia</p>
+    <span class="apto" id="apto-nome" data-i18n="apto_nome">Apartamento — Rua de Santa Catarina</span>
+  </div>
+</header>
+
+<div class="idiomas" role="tablist" aria-label="Idioma">
+  <button data-idioma="pt" class="ativo">PT</button>
+  <button data-idioma="en">EN</button>
+  <button data-idioma="es">ES</button>
+  <button data-idioma="fr">FR</button>
+</div>
+
+<main id="conteudo">
+
+  <!-- ================= CONTACTOS ================= -->
+  <section class="contactos">
+    <h3 data-i18n="contactos_titulo">Contactos</h3>
+    <div class="grelha">
+      <p>
+        <span data-i18n="contactos_tel_label">Telefone</span> —
+        <a href="tel:+3519XXXXXXXX" data-i18n="contactos_tel_val">+351 9XX XXX XXX</a>
+        <span data-i18n="contactos_tel_nota"> (chamada para a rede móvel nacional)</span>
+      </p>
+      <p>
+        <span data-i18n="contactos_whats_label">WhatsApp</span> —
+        <a href="https://wa.me/3519XXXXXXXX" target="_blank" rel="noopener"
+           data-i18n="contactos_whats_val">falar connosco</a>
+      </p>
+      <p>
+        <span data-i18n="contactos_email_label">Email</span> —
+        <a href="mailto:hello@hostelclean.pt" data-i18n="contactos_email_val">hello@hostelclean.pt</a>
+      </p>
+      <p>
+        <span data-i18n="contactos_emerg_label">Emergência</span> —
+        <a href="tel:112" data-i18n="contactos_emerg_val">112</a>
+        <span data-i18n="contactos_emerg_nota"> (polícia, bombeiros, ambulância)</span>
+      </p>
+      <p class="nota" data-i18n="contactos_nota">
+        Para resposta mais rápida, prefira WhatsApp.
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= ATALHOS RÁPIDOS ================= -->
+  <nav class="atalhos" aria-label="Atalhos">
+    <a href="https://maps.google.com/?q=Rua+de+Santa+Catarina+150+Porto"
+       target="_blank" rel="noopener">
+      <span class="icone">📍</span>
+      <span data-i18n="atalho_onde">Onde estamos</span>
+    </a>
+    <button type="button" data-atalho="horarios">
+      <span class="icone">🕐</span>
+      <span data-i18n="atalho_checkout">Check-out</span>
+    </button>
+  </nav>
+
+  <!-- ================= GRUPO 1 — A ESTADIA ================= -->
+  <div class="grupo"><span class="icone">🏠</span> <span data-i18n="grupo_estadia">A estadia</span></div>
+
+  <details class="seccao" id="seccao-horarios" open>
+    <summary data-i18n="horarios_titulo">Horários</summary>
+    <div class="conteudo">
+      <table class="horarios">
+        <tr><th data-i18n="horarios_entrada">Entrada</th>
+            <td data-i18n="horarios_entrada_val">A partir das 15:00</td></tr>
+        <tr><th data-i18n="horarios_saida">Saída</th>
+            <td data-i18n="horarios_saida_val">Até às 12:00</td></tr>
+        <tr><th data-i18n="horarios_entrada_ant">Entrada antecipada</th>
+            <td data-i18n="horarios_entrada_ant_val">Sujeita a disponibilidade. Pergunte-nos.</td></tr>
+        <tr><th data-i18n="horarios_saida_tar">Saída tardia</th>
+            <td data-i18n="horarios_saida_tar_val">Sujeita a disponibilidade. Pergunte-nos.</td></tr>
+        <tr><th data-i18n="horarios_sossego">Sossego</th>
+            <td data-i18n="horarios_sossego_val">Das 22:00 às 08:00</td></tr>
+      </table>
+    </div>
+  </details>
+
+  <details class="seccao">
+    <summary data-i18n="wifi_titulo">Wi-Fi</summary>
+    <div class="conteudo">
+      <p data-i18n="wifi_texto">
+        Gratuito em todo o apartamento. A senha foi enviada na mensagem
+        com os códigos de acesso, e há um QR code na sala para ligar
+        sem escrever nada.
+      </p>
+    </div>
+  </details>
+
+  <details class="seccao">
+    <summary data-i18n="cozinha_titulo">Cozinha</summary>
+    <div class="conteudo">
+      <p data-i18n="cozinha_texto">
+        O apartamento tem cozinha equipada com utensílios para uso.
+      </p>
+    </div>
+  </details>
+
+  <details class="seccao">
+    <summary data-i18n="limpeza_titulo">Limpeza e roupa</summary>
+    <div class="conteudo">
+      <p data-i18n="limpeza_texto">
+        À chegada encontra roupa de cama, toalhas de banho e de rosto
+        e kit de banho.
+      </p>
+      <p data-i18n="limpeza_longas">
+        <strong>Estadias longas</strong> — acima de sete noites, fazemos
+        troca de roupa de cama e toalhas.
+      </p>
+      <p data-i18n="limpeza_extra">
+        <strong>Toalhas ou lençóis extra</strong> antes desse prazo —
+        diga-nos e ajudamos sempre que possível.
+      </p>
+      <p data-i18n="limpeza_ajuda">
+        <strong>Para nos ajudar</strong> — ao sair durante o dia,
+        desligue luzes e climatização. Roupa molhada ou suja pode
+        ficar no cesto da casa de banho.
+      </p>
+    </div>
+  </details>
+
+  <details class="seccao">
+    <summary data-i18n="clima_titulo">Climatização</summary>
+    <div class="conteudo">
+      <p data-i18n="clima_texto">
+        O apartamento tem ar condicionado. Use com moderação e desligue
+        ao sair. Em noites frescas, basta abrir a janela.
+      </p>
+    </div>
+  </details>
+
+  <!-- ================= GRUPO 2 — A CASA ================= -->
+  <div class="grupo"><span class="icone">📖</span> <span data-i18n="grupo_casa">A casa</span></div>
+
+  <details class="seccao">
+    <summary data-i18n="regras_titulo">Regras da casa</summary>
+    <div class="conteudo">
+      <p data-i18n="regras_hospedes">
+        <strong>Hóspedes</strong> — só podem permanecer no apartamento
+        os hóspedes registados na reserva. Não é permitida a entrada
+        de visitantes que não constem dela.
+      </p>
+      <p data-i18n="regras_tabaco">
+        <strong>Tabaco</strong> — não fumar no interior. Se fumar,
+        use apenas as zonas exteriores, apague bem as beatas e não as
+        deixe no chão.
+      </p>
+      <p data-i18n="regras_festas">
+        <strong>Festas e eventos</strong> — não são permitidos. O
+        apartamento é para alojamento, não para celebrações com grupos
+        alargados, música alta ou eventos.
+      </p>
+      <p data-i18n="regras_animais">
+        <strong>Animais</strong> — não aceitamos animais de estimação.
+      </p>
+      <p data-i18n="regras_vizinhanca">
+        <strong>Vizinhança</strong> — estamos num edifício com vizinhos
+        próximos. Respeitar a tranquilidade de quem vive aqui faz parte
+        de estar aqui.
+      </p>
+    </div>
+  </details>
+
+  <details class="seccao">
+    <summary data-i18n="ruido_titulo">Ruído</summary>
+    <div class="conteudo">
+      <p data-i18n="ruido_texto1">
+        Aqui, parte do que se procura é o silêncio.
+      </p>
+      <p data-i18n="ruido_texto2">
+        A partir das 22:00, evite ruído no exterior — música, chamadas
+        em alta voz, conversas prolongadas. Se tiver som no interior,
+        mantenha portas e janelas fechadas. Crianças a brincar lá fora,
+        sem problema, dentro do bom senso e a horas normais.
+      </p>
+      <p data-i18n="ruido_obrigado">
+        Obrigado por ajudar a manter o ambiente calmo no Hostel Clean.
+      </p>
+    </div>
+  </details>
+
+  <details class="seccao">
+    <summary data-i18n="seguranca_titulo">Segurança, objectos de valor e danos</summary>
+    <div class="conteudo">
+      <p data-i18n="seguranca_valor">
+        <strong>Objectos de valor</strong> — há cofre no apartamento:
+        use-o para documentos, dinheiro e o que não quiser levar
+        consigo. Feche portas e janelas ao sair. A responsabilidade do
+        alojamento por bens deixados no apartamento é a que resulta da
+        lei aplicável.
+      </p>
+      <p data-i18n="seguranca_emergencia">
+        <strong>Emergência</strong> — 112. É o número europeu: polícia,
+        bombeiros e ambulância.
+      </p>
+      <p data-i18n="seguranca_danos">
+        <strong>Danos</strong> — cuidamos muito do espaço e agradecemos
+        a sua ajuda em mantê-lo como o encontrou. Se ocorrer algum
+        dano, diga-nos: fazemos uma avaliação justa e transparente.
+        Pequenos acidentes acontecem e na maior parte das vezes não
+        têm custo associado. Em caso de danos significativos, poderemos
+        solicitar o custo de reparação ou substituição.
+      </p>
+    </div>
+  </details>
+
+  <details class="seccao">
+    <summary data-i18n="criancas_titulo">Crianças</summary>
+    <div class="conteudo">
+      <p data-i18n="criancas_texto">
+        As crianças são bem-vindas. Por favor, não as deixe sozinhas
+        no apartamento e atenção às janelas e à escada.
+      </p>
+    </div>
+  </details>
+
+  <!-- ================= GRUPO 3 — AVARIAS E SAÍDA ================= -->
+  <div class="grupo"><span class="icone">🔧</span> <span data-i18n="grupo_avarias">Avarias e saída</span></div>
+
+  <details class="seccao">
+    <summary data-i18n="avarias_titulo">Se algo se avariar</summary>
+    <div class="conteudo">
+      <p data-i18n="avarias_urgentes">
+        <strong>Urgências</strong> — atendemos sempre, a qualquer hora.
+      </p>
+      <ul class="limpa">
+        <li data-i18n="avarias_u1">Água a verter ou fuga importante</li>
+        <li data-i18n="avarias_u2">Cheiro a gás</li>
+        <li data-i18n="avarias_u3">Falta total de electricidade</li>
+        <li data-i18n="avarias_u4">Problema de segurança do apartamento</li>
+      </ul>
+
+      <div class="contacto-rapido">
+        <a class="telefone" href="tel:+3519XXXXXXXX" data-i18n="avarias_ligar">
+          📞 Ligar: +351 9XX XXX XXX
+        </a>
+      </div>
+
+      <p data-i18n="avarias_nao_urgentes" style="margin-top:18px">
+        <strong>Incómodos não urgentes</strong> — resolvemos no próximo
+        horário útil.
+      </p>
+      <ul class="limpa">
+        <li data-i18n="avarias_n1">Lâmpada fundida</li>
+        <li data-i18n="avarias_n2">Wi-Fi lento</li>
+        <li data-i18n="avarias_n3">Equipamento sem responder</li>
+        <li data-i18n="avarias_n4">Pequenas avarias domésticas</li>
+      </ul>
+      <p data-i18n="avarias_mensagem">Mande mensagem e tratamos.</p>
+    </div>
+  </details>
+
+  <details class="seccao">
+    <summary data-i18n="antes_sair_titulo">Antes de sair</summary>
+    <div class="conteudo">
+      <ul class="limpa">
+        <li data-i18n="antes_sair_1">Feche portas e janelas.</li>
+        <li data-i18n="antes_sair_2">Desligue luzes e ar condicionado.</li>
+        <li data-i18n="antes_sair_3">Deixe a chave na caixa cofre à entrada do apartamento.</li>
+        <li data-i18n="antes_sair_5">Confirme que não esquece nada.</li>
+      </ul>
+    </div>
+  </details>
+
+</main>
+
+<footer>
+  <span data-i18n="rodape">Hostel Clean · Rua de Santa Catarina, n.º 150, 4000-450 Porto</span>
+  · <a href="https://maps.google.com/?q=Rua+de+Santa+Catarina+150+Porto"
+       target="_blank" rel="noopener" data-i18n="rodape_maps">Ver no Google Maps</a>
+</footer>
+
+<script>
+// =====================================================================
+// TEXTOS — PT / EN / ES / FR
+// =====================================================================
+const TEXTOS = {
+  pt: {
+    titulo_livro: "Livro de Informações",
+    subtitulo_livro: "Guia da sua estadia",
+    apto_nome: "Apartamento — Rua de Santa Catarina",
+    grupo_estadia: "A estadia",
+    grupo_casa: "A casa",
+    grupo_avarias: "Avarias e saída",
+
+    contactos_titulo: "Contactos",
+    contactos_tel_label: "Telefone",
+    contactos_tel_val: "+351 9XX XXX XXX",
+    contactos_tel_nota: " (chamada para a rede móvel nacional)",
+    contactos_whats_label: "WhatsApp",
+    contactos_whats_val: "falar connosco",
+    contactos_email_label: "Email",
+    contactos_email_val: "hello@hostelclean.pt",
+    contactos_emerg_label: "Emergência",
+    contactos_emerg_val: "112",
+    contactos_emerg_nota: " (polícia, bombeiros, ambulância)",
+    contactos_nota: "Para resposta mais rápida, prefira WhatsApp.",
+
+    atalho_onde: "Onde estamos",
+    atalho_checkout: "Check-out",
+
+    horarios_titulo: "Horários",
+    horarios_entrada: "Entrada",
+    horarios_entrada_val: "A partir das 15:00",
+    horarios_saida: "Saída",
+    horarios_saida_val: "Até às 12:00",
+    horarios_entrada_ant: "Entrada antecipada",
+    horarios_entrada_ant_val: "Sujeita a disponibilidade. Pergunte-nos.",
+    horarios_saida_tar: "Saída tardia",
+    horarios_saida_tar_val: "Sujeita a disponibilidade. Pergunte-nos.",
+    horarios_sossego: "Sossego",
+    horarios_sossego_val: "Das 22:00 às 08:00",
+
+    wifi_titulo: "Wi-Fi",
+    wifi_texto: "Gratuito em todo o apartamento. A senha foi enviada na mensagem com os códigos de acesso, e há um QR code na sala para ligar sem escrever nada.",
+
+    cozinha_titulo: "Cozinha",
+    cozinha_texto: "O apartamento tem cozinha equipada com utensílios para uso.",
+
+    limpeza_titulo: "Limpeza e roupa",
+    limpeza_texto: "À chegada encontra roupa de cama, toalhas de banho e de rosto e kit de banho.",
+    limpeza_longas: "Estadias longas — acima de sete noites, fazemos troca de roupa de cama e toalhas.",
+    limpeza_extra: "Toalhas ou lençóis extra antes desse prazo — diga-nos e ajudamos sempre que possível.",
+    limpeza_ajuda: "Para nos ajudar — ao sair durante o dia, desligue luzes e climatização. Roupa molhada ou suja pode ficar no cesto da casa de banho.",
+
+    clima_titulo: "Climatização",
+    clima_texto: "O apartamento tem ar condicionado. Use com moderação e desligue ao sair. Em noites frescas, basta abrir a janela.",
+
+    regras_titulo: "Regras da casa",
+    regras_hospedes: "Hóspedes — só podem permanecer no apartamento os hóspedes registados na reserva. Não é permitida a entrada de visitantes que não constem dela.",
+    regras_tabaco: "Tabaco — não fumar no interior. Se fumar, use apenas as zonas exteriores, apague bem as beatas e não as deixe no chão.",
+    regras_festas: "Festas e eventos — não são permitidos. O apartamento é para alojamento, não para celebrações com grupos alargados, música alta ou eventos.",
+    regras_animais: "Animais — não aceitamos animais de estimação.",
+    regras_vizinhanca: "Vizinhança — estamos num edifício com vizinhos próximos. Respeitar a tranquilidade de quem vive aqui faz parte de estar aqui.",
+
+    ruido_titulo: "Ruído",
+    ruido_texto1: "Aqui, parte do que se procura é o silêncio.",
+    ruido_texto2: "A partir das 22:00, evite ruído no exterior — música, chamadas em alta voz, conversas prolongadas. Se tiver som no interior, mantenha portas e janelas fechadas. Crianças a brincar lá fora, sem problema, dentro do bom senso e a horas normais.",
+    ruido_obrigado: "Obrigado por ajudar a manter o ambiente calmo no Hostel Clean.",
+
+    seguranca_titulo: "Segurança, objectos de valor e danos",
+    seguranca_valor: "Objectos de valor — há cofre no apartamento: use-o para documentos, dinheiro e o que não quiser levar consigo. Feche portas e janelas ao sair. A responsabilidade do alojamento por bens deixados no apartamento é a que resulta da lei aplicável.",
+    seguranca_emergencia: "Emergência — 112. É o número europeu: polícia, bombeiros e ambulância.",
+    seguranca_danos: "Danos — cuidamos muito do espaço e agradecemos a sua ajuda em mantê-lo como o encontrou. Se ocorrer algum dano, diga-nos: fazemos uma avaliação justa e transparente. Pequenos acidentes acontecem e na maior parte das vezes não têm custo associado. Em caso de danos significativos, poderemos solicitar o custo de reparação ou substituição.",
+
+    criancas_titulo: "Crianças",
+    criancas_texto: "As crianças são bem-vindas. Por favor, não as deixe sozinhas no apartamento e atenção às janelas e à escada.",
+
+    avarias_titulo: "Se algo se avariar",
+    avarias_urgentes: "Urgências — atendemos sempre, a qualquer hora.",
+    avarias_u1: "Água a verter ou fuga importante",
+    avarias_u2: "Cheiro a gás",
+    avarias_u3: "Falta total de electricidade",
+    avarias_u4: "Problema de segurança do apartamento",
+    avarias_ligar: "📞 Ligar: +351 9XX XXX XXX",
+    avarias_nao_urgentes: "Incómodos não urgentes — resolvemos no próximo horário útil.",
+    avarias_n1: "Lâmpada fundida",
+    avarias_n2: "Wi-Fi lento",
+    avarias_n3: "Equipamento sem responder",
+    avarias_n4: "Pequenas avarias domésticas",
+    avarias_mensagem: "Mande mensagem e tratamos.",
+
+    antes_sair_titulo: "Antes de sair",
+    antes_sair_1: "Feche portas e janelas.",
+    antes_sair_2: "Desligue luzes e ar condicionado.",
+    antes_sair_3: "Deixe a chave na caixa cofre à entrada do apartamento.",
+    antes_sair_5: "Confirme que não esquece nada.",
+
+    rodape: "Hostel Clean · Rua de Santa Catarina, n.º 150, 4000-450 Porto",
+    rodape_maps: "Ver no Google Maps"
+  },
+
+  en: {
+    titulo_livro: "Information Book",
+    subtitulo_livro: "Guide to your stay",
+    apto_nome: "Apartment — Rua de Santa Catarina",
+    grupo_estadia: "Your stay",
+    grupo_casa: "The home",
+    grupo_avarias: "Breakdowns and check-out",
+
+    contactos_titulo: "Contacts",
+    contactos_tel_label: "Phone",
+    contactos_tel_val: "+351 9XX XXX XXX",
+    contactos_tel_nota: " (call to the national mobile network)",
+    contactos_whats_label: "WhatsApp",
+    contactos_whats_val: "talk to us",
+    contactos_email_label: "Email",
+    contactos_email_val: "hello@hostelclean.pt",
+    contactos_emerg_label: "Emergency",
+    contactos_emerg_val: "112",
+    contactos_emerg_nota: " (police, fire brigade, ambulance)",
+    contactos_nota: "For a faster reply, please use WhatsApp.",
+
+    atalho_onde: "Where we are",
+    atalho_checkout: "Check-out",
+
+    horarios_titulo: "Times",
+    horarios_entrada: "Check-in",
+    horarios_entrada_val: "From 15:00",
+    horarios_saida: "Check-out",
+    horarios_saida_val: "Until 12:00",
+    horarios_entrada_ant: "Early check-in",
+    horarios_entrada_ant_val: "Subject to availability. Ask us.",
+    horarios_saida_tar: "Late check-out",
+    horarios_saida_tar_val: "Subject to availability. Ask us.",
+    horarios_sossego: "Quiet hours",
+    horarios_sossego_val: "From 22:00 to 08:00",
+
+    wifi_titulo: "Wi-Fi",
+    wifi_texto: "Free throughout the apartment. The password was sent in the access-code message, and there is a QR code in the living room to connect without typing anything.",
+
+    cozinha_titulo: "Kitchen",
+    cozinha_texto: "The apartment has a kitchen equipped with utensils for your use.",
+
+    limpeza_titulo: "Cleaning and laundry",
+    limpeza_texto: "On arrival you will find bed linen, bath and hand towels and a bathroom kit.",
+    limpeza_longas: "Long stays — over seven nights, we change bed linen and towels.",
+    limpeza_extra: "Extra towels or sheets before that period — let us know and we will help whenever possible.",
+    limpeza_ajuda: "To help us — when you go out during the day, turn off lights and air conditioning. Wet or dirty clothes can be left in the bathroom basket.",
+
+    clima_titulo: "Air conditioning",
+    clima_texto: "The apartment has air conditioning. Use it sparingly and turn it off when you leave. On cool nights, just open the window.",
+
+    regras_titulo: "House rules",
+    regras_hospedes: "Guests — only guests registered in the reservation may stay in the apartment. Visitors not listed are not allowed.",
+    regras_tabaco: "Smoking — no smoking indoors. If you smoke, use outdoor areas only, put out cigarettes properly and do not leave them on the ground.",
+    regras_festas: "Parties and events — not allowed. The apartment is for accommodation, not for celebrations with large groups, loud music or events.",
+    regras_animais: "Pets — we do not accept pets.",
+    regras_vizinhanca: "Neighbours — this is a building with close neighbours. Respecting the peace of those who live here is part of staying here.",
+
+    ruido_titulo: "Noise",
+    ruido_texto1: "Here, part of what you are looking for is silence.",
+    ruido_texto2: "From 22:00, avoid noise outside — music, loud calls, long conversations. If you have sound indoors, keep doors and windows closed. Children playing outside is fine, within common sense and at normal hours.",
+    ruido_obrigado: "Thank you for helping keep Hostel Clean calm.",
+
+    seguranca_titulo: "Safety, valuables and damage",
+    seguranca_valor: "Valuables — there is a safe in the apartment: use it for documents, money and anything you do not want to carry with you. Close doors and windows when you leave. The accommodation's liability for items left in the apartment is that provided by applicable law.",
+    seguranca_emergencia: "Emergency — 112. This is the European number: police, fire brigade and ambulance.",
+    seguranca_danos: "Damage — we take great care of the space and thank you for helping keep it as you found it. If any damage occurs, tell us: we make a fair and transparent assessment. Small accidents happen and most of the time there is no cost. In case of significant damage, we may ask for the cost of repair or replacement.",
+
+    criancas_titulo: "Children",
+    criancas_texto: "Children are welcome. Please do not leave them alone in the apartment and pay attention to windows and stairs.",
+
+    avarias_titulo: "If something breaks",
+    avarias_urgentes: "Urgent — we always answer, at any hour.",
+    avarias_u1: "Water leaking or major leak",
+    avarias_u2: "Gas smell",
+    avarias_u3: "Total power failure",
+    avarias_u4: "Security problem in the apartment",
+    avarias_ligar: "📞 Call: +351 9XX XXX XXX",
+    avarias_nao_urgentes: "Non-urgent issues — we deal with them on the next working hours.",
+    avarias_n1: "Blown bulb",
+    avarias_n2: "Slow Wi-Fi",
+    avarias_n3: "Equipment not responding",
+    avarias_n4: "Small household breakdowns",
+    avarias_mensagem: "Send a message and we will handle it.",
+
+    antes_sair_titulo: "Before you leave",
+    antes_sair_1: "Close doors and windows.",
+    antes_sair_2: "Turn off lights and air conditioning.",
+    antes_sair_3: "Leave the key in the safe box at the apartment entrance.",
+    antes_sair_5: "Check you have not forgotten anything.",
+
+    rodape: "Hostel Clean · Rua de Santa Catarina, no. 150, 4000-450 Porto",
+    rodape_maps: "View on Google Maps"
+  },
+
+  es: {
+    titulo_livro: "Libro de Información",
+    subtitulo_livro: "Guía de su estancia",
+    apto_nome: "Apartamento — Rua de Santa Catarina",
+    grupo_estadia: "La estancia",
+    grupo_casa: "La casa",
+    grupo_avarias: "Averías y salida",
+
+    contactos_titulo: "Contactos",
+    contactos_tel_label: "Teléfono",
+    contactos_tel_val: "+351 9XX XXX XXX",
+    contactos_tel_nota: " (llamada a la red móvil nacional)",
+    contactos_whats_label: "WhatsApp",
+    contactos_whats_val: "hablar con nosotros",
+    contactos_email_label: "Email",
+    contactos_email_val: "hello@hostelclean.pt",
+    contactos_emerg_label: "Emergencia",
+    contactos_emerg_val: "112",
+    contactos_emerg_nota: " (policía, bomberos, ambulancia)",
+    contactos_nota: "Para una respuesta más rápida, prefiera WhatsApp.",
+
+    atalho_onde: "Dónde estamos",
+    atalho_checkout: "Check-out",
+
+    horarios_titulo: "Horarios",
+    horarios_entrada: "Entrada",
+    horarios_entrada_val: "A partir de las 15:00",
+    horarios_saida: "Salida",
+    horarios_saida_val: "Hasta las 12:00",
+    horarios_entrada_ant: "Entrada anticipada",
+    horarios_entrada_ant_val: "Sujeta a disponibilidad. Pregúntenos.",
+    horarios_saida_tar: "Salida tardía",
+    horarios_saida_tar_val: "Sujeta a disponibilidad. Pregúntenos.",
+    horarios_sossego: "Silencio",
+    horarios_sossego_val: "De 22:00 a 08:00",
+
+    wifi_titulo: "Wi-Fi",
+    wifi_texto: "Gratis en todo el apartamento. La contraseña se envió en el mensaje con los códigos de acceso, y hay un código QR en el salón para conectarse sin escribir nada.",
+
+    cozinha_titulo: "Cocina",
+    cozinha_texto: "El apartamento tiene cocina equipada con utensilios para su uso.",
+
+    limpeza_titulo: "Limpieza y ropa",
+    limpeza_texto: "A la llegada encontrará ropa de cama, toallas de baño y de manos y kit de baño.",
+    limpeza_longas: "Estancias largas — a partir de siete noches, cambiamos ropa de cama y toallas.",
+    limpeza_extra: "Toallas o sábanas extra antes de ese plazo — díganoslo y ayudamos siempre que sea posible.",
+    limpeza_ajuda: "Para ayudarnos — al salir durante el día, apague luces y climatización. La ropa mojada o sucia puede dejarse en el cesto del baño.",
+
+    clima_titulo: "Climatización",
+    clima_texto: "El apartamento tiene aire acondicionado. Úselo con moderación y apáguelo al salir. En noches frescas, basta con abrir la ventana.",
+
+    regras_titulo: "Normas de la casa",
+    regras_hospedes: "Huéspedes — solo pueden alojarse en el apartamento los huéspedes registrados en la reserva. No se permite la entrada de visitantes que no figuren en ella.",
+    regras_tabaco: "Tabaco — no fumar en el interior. Si fuma, use solo las zonas exteriores, apague bien las colillas y no las deje en el suelo.",
+    regras_festas: "Fiestas y eventos — no están permitidos. El apartamento es para alojamiento, no para celebraciones con grupos numerosos, música alta o eventos.",
+    regras_animais: "Animales — no aceptamos animales de compañía.",
+    regras_vizinhanca: "Vecindario — estamos en un edificio con vecinos cercanos. Respetar la tranquilidad de quienes viven aquí forma parte de estar aquí.",
+
+    ruido_titulo: "Ruido",
+    ruido_texto1: "Aquí, parte de lo que se busca es el silencio.",
+    ruido_texto2: "A partir de las 22:00, evite ruido en el exterior — música, llamadas en voz alta, conversaciones prolongadas. Si tiene sonido en el interior, mantenga puertas y ventanas cerradas. Niños jugando fuera, sin problema, dentro del sentido común y a horas normales.",
+    ruido_obrigado: "Gracias por ayudar a mantener la calma en Hostel Clean.",
+
+    seguranca_titulo: "Seguridad, objetos de valor y daños",
+    seguranca_valor: "Objetos de valor — hay caja fuerte en el apartamento: úsela para documentos, dinero y lo que no quiera llevar consigo. Cierre puertas y ventanas al salir. La responsabilidad del alojamiento por bienes dejados en el apartamento es la que resulte de la ley aplicable.",
+    seguranca_emergencia: "Emergencia — 112. Es el número europeo: policía, bomberos y ambulancia.",
+    seguranca_danos: "Daños — cuidamos mucho el espacio y agradecemos su ayuda para mantenerlo como lo encontró. Si ocurre algún daño, díganoslo: hacemos una evaluación justa y transparente. Los pequeños accidentes ocurren y la mayoría de las veces no tienen coste. En caso de daños significativos, podremos solicitar el coste de reparación o sustitución.",
+
+    criancas_titulo: "Niños",
+    criancas_texto: "Los niños son bienvenidos. Por favor, no los deje solos en el apartamento y preste atención a las ventanas y a la escalera.",
+
+    avarias_titulo: "Si algo se avería",
+    avarias_urgentes: "Urgencias — atendemos siempre, a cualquier hora.",
+    avarias_u1: "Agua corriendo o fuga importante",
+    avarias_u2: "Olor a gas",
+    avarias_u3: "Falta total de electricidad",
+    avarias_u4: "Problema de seguridad del apartamento",
+    avarias_ligar: "📞 Llamar: +351 9XX XXX XXX",
+    avarias_nao_urgentes: "Molestias no urgentes — lo resolvemos en el próximo horario útil.",
+    avarias_n1: "Bombilla fundida",
+    avarias_n2: "Wi-Fi lento",
+    avarias_n3: "Equipo que no responde",
+    avarias_n4: "Pequeñas averías domésticas",
+    avarias_mensagem: "Mande un mensaje y lo solucionamos.",
+
+    antes_sair_titulo: "Antes de salir",
+    antes_sair_1: "Cierre puertas y ventanas.",
+    antes_sair_2: "Apague luces y aire acondicionado.",
+    antes_sair_3: "Deje la llave en la caja fuerte a la entrada del apartamento.",
+    antes_sair_5: "Compruebe que no olvida nada.",
+
+    rodape: "Hostel Clean · Rua de Santa Catarina, n.º 150, 4000-450 Oporto",
+    rodape_maps: "Ver en Google Maps"
+  },
+
+  fr: {
+    titulo_livro: "Livret d'informations",
+    subtitulo_livro: "Guide de votre séjour",
+    apto_nome: "Appartement — Rua de Santa Catarina",
+    grupo_estadia: "Le séjour",
+    grupo_casa: "La maison",
+    grupo_avarias: "Pannes et départ",
+
+    contactos_titulo: "Contacts",
+    contactos_tel_label: "Téléphone",
+    contactos_tel_val: "+351 9XX XXX XXX",
+    contactos_tel_nota: " (appel vers le réseau mobile national)",
+    contactos_whats_label: "WhatsApp",
+    contactos_whats_val: "nous parler",
+    contactos_email_label: "Email",
+    contactos_email_val: "hello@hostelclean.pt",
+    contactos_emerg_label: "Urgence",
+    contactos_emerg_val: "112",
+    contactos_emerg_nota: " (police, pompiers, ambulance)",
+    contactos_nota: "Pour une réponse plus rapide, privilégiez WhatsApp.",
+
+    atalho_onde: "Où nous sommes",
+    atalho_checkout: "Départ",
+
+    horarios_titulo: "Horaires",
+    horarios_entrada: "Arrivée",
+    horarios_entrada_val: "À partir de 15h00",
+    horarios_saida: "Départ",
+    horarios_saida_val: "Jusqu'à 12h00",
+    horarios_entrada_ant: "Arrivée anticipée",
+    horarios_entrada_ant_val: "Selon disponibilité. Demandez-nous.",
+    horarios_saida_tar: "Départ tardif",
+    horarios_saida_tar_val: "Selon disponibilité. Demandez-nous.",
+    horarios_sossego: "Calme",
+    horarios_sossego_val: "De 22h00 à 08h00",
+
+    wifi_titulo: "Wi-Fi",
+    wifi_texto: "Gratuit dans tout l'appartement. Le mot de passe a été envoyé dans le message avec les codes d'accès, et il y a un QR code dans le salon pour se connecter sans rien écrire.",
+
+    cozinha_titulo: "Cuisine",
+    cozinha_texto: "L'appartement dispose d'une cuisine équipée avec des ustensiles à votre disposition.",
+
+    limpeza_titulo: "Ménage et linge",
+    limpeza_texto: "À votre arrivée, vous trouverez du linge de lit, des serviettes de bain et de toilette et un kit de salle de bain.",
+    limpeza_longas: "Séjours longs — au-delà de sept nuits, nous changeons le linge de lit et les serviettes.",
+    limpeza_extra: "Serviettes ou draps supplémentaires avant ce délai — dites-le-nous et nous vous aiderons dans la mesure du possible.",
+    limpeza_ajuda: "Pour nous aider — en sortant dans la journée, éteignez les lumières et la climatisation. Le linge mouillé ou sale peut être laissé dans le panier de la salle de bain.",
+
+    clima_titulo: "Climatisation",
+    clima_texto: "L'appartement dispose de la climatisation. Utilisez-la avec modération et éteignez-la en sortant. Les nuits fraîches, ouvrez simplement la fenêtre.",
+
+    regras_titulo: "Règles de la maison",
+    regras_hospedes: "Hôtes — seuls les hôtes enregistrés dans la réservation peuvent séjourner dans l'appartement. Les visiteurs non inscrits ne sont pas autorisés.",
+    regras_tabaco: "Tabac — interdiction de fumer à l'intérieur. Si vous fumez, utilisez uniquement les espaces extérieurs, éteignez bien les mégots et ne les laissez pas au sol.",
+    regras_festas: "Fêtes et événements — non autorisés. L'appartement est destiné à l'hébergement, pas aux célébrations avec des groupes nombreux, à la musique forte ou aux événements.",
+    regras_animais: "Animaux — nous n'acceptons pas les animaux de compagnie.",
+    regras_vizinhanca: "Voisinage — nous sommes dans un immeuble avec des voisins proches. Respecter la tranquillité de ceux qui vivent ici fait partie du séjour.",
+
+    ruido_titulo: "Bruit",
+    ruido_texto1: "Ici, une partie de ce que vous recherchez, c'est le silence.",
+    ruido_texto2: "À partir de 22h00, évitez le bruit à l'extérieur — musique, appels à voix haute, conversations prolongées. Si vous avez du son à l'intérieur, gardez portes et fenêtres fermées. Les enfants qui jouent dehors, pas de problème, dans le bon sens et à des heures normales.",
+    ruido_obrigado: "Merci d'aider à maintenir le calme au Hostel Clean.",
+
+    seguranca_titulo: "Sécurité, objets de valeur et dommages",
+    seguranca_valor: "Objets de valeur — il y a un coffre-fort dans l'appartement : utilisez-le pour les documents, l'argent et ce que vous ne voulez pas emporter. Fermez portes et fenêtres en sortant. La responsabilité de l'hébergement pour les biens laissés dans l'appartement est celle prévue par la loi applicable.",
+    seguranca_emergencia: "Urgence — 112. C'est le numéro européen : police, pompiers et ambulance.",
+    seguranca_danos: "Dommages — nous prenons grand soin de l'espace et vous remercions de nous aider à le garder tel que vous l'avez trouvé. Si un dommage survient, dites-le-nous : nous faisons une évaluation juste et transparente. Les petits accidents arrivent et la plupart du temps n'entraînent aucun coût. En cas de dommages importants, nous pourrons demander le coût de la réparation ou du remplacement.",
+
+    criancas_titulo: "Enfants",
+    criancas_texto: "Les enfants sont les bienvenus. Veuillez ne pas les laisser seuls dans l'appartement et faites attention aux fenêtres et à l'escalier.",
+
+    avarias_titulo: "Si quelque chose tombe en panne",
+    avarias_urgentes: "Urgences — nous répondons toujours, à toute heure.",
+    avarias_u1: "Eau qui coule ou fuite importante",
+    avarias_u2: "Odeur de gaz",
+    avarias_u3: "Coupure totale d'électricité",
+    avarias_u4: "Problème de sécurité dans l'appartement",
+    avarias_ligar: "📞 Appeler : +351 9XX XXX XXX",
+    avarias_nao_urgentes: "Désagréments non urgents — nous les traitons aux prochaines heures ouvrables.",
+    avarias_n1: "Ampoule grillée",
+    avarias_n2: "Wi-Fi lent",
+    avarias_n3: "Équipement qui ne répond pas",
+    avarias_n4: "Petites pannes domestiques",
+    avarias_mensagem: "Envoyez un message et nous nous en occupons.",
+
+    antes_sair_titulo: "Avant de partir",
+    antes_sair_1: "Fermez portes et fenêtres.",
+    antes_sair_2: "Éteignez les lumières et la climatisation.",
+    antes_sair_3: "Laissez la clé dans la boîte à clés à l'entrée de l'appartement.",
+    antes_sair_5: "Vérifiez que vous n'oubliez rien.",
+
+    rodape: "Hostel Clean · Rua de Santa Catarina, n.º 150, 4000-450 Porto",
+    rodape_maps: "Voir sur Google Maps"
+  }
+};
+
+// =====================================================================
+// MOTOR DE IDIOMA
+// =====================================================================
+function aplicarIdioma(codigo) {
+  const dic = TEXTOS[codigo] || TEXTOS.pt;
+  document.documentElement.lang = codigo === "pt" ? "pt-PT" : codigo;
+
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const chave = el.getAttribute("data-i18n");
+    if (dic[chave]) { el.textContent = dic[chave]; }
+  });
+
+  document.querySelectorAll(".idiomas button").forEach((b) => {
+    b.classList.toggle("ativo", b.dataset.idioma === codigo);
+  });
+
+  try { localStorage.setItem("hostelclean_idioma", codigo); } catch (e) {}
+}
+
+document.querySelectorAll(".idiomas button").forEach((b) => {
+  b.addEventListener("click", () => aplicarIdioma(b.dataset.idioma));
+});
+
+const guardado = (() => {
+  try { return localStorage.getItem("hostelclean_idioma"); }
+  catch (e) { return null; }
+})();
+const nav = (navigator.language || "pt").slice(0, 2).toLowerCase();
+aplicarIdioma(guardado || (["pt", "en", "es", "fr"].includes(nav) ? nav : "pt"));
+
+// =====================================================================
+// ATALHOS RÁPIDOS — abrir secção e fazer scroll
+// =====================================================================
+document.querySelectorAll("[data-atalho]").forEach((botao) => {
+  botao.addEventListener("click", () => {
+    const alvo = document.getElementById("seccao-" + botao.dataset.atalho);
+    if (!alvo) { return; }
+    document.querySelectorAll("details.seccao").forEach((d) => {
+      if (d !== alvo) { d.open = false; }
+    });
+    alvo.open = true;
+    alvo.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+});
+
+// =====================================================================
+// TOKEN DA RESERVA (opcional — só quando a API estiver pronta)
+// =====================================================================
+// const token = new URLSearchParams(location.search).get("t") || "";
+// if (token) {
+//   fetch("/api/reserva?t=" + encodeURIComponent(token))
+//     .then((r) => r.json())
+//     .then((d) => {
+//       if (d && d.apartamento) {
+//         document.getElementById("apto-nome").textContent = d.apartamento;
+//       }
+//     })
+//     .catch(() => {});
+// }
+</script>
+
+</body>
+</html>
