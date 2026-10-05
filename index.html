@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
+<!-- O link leva o token (?t=...): nunca o enviar a outros sites. -->
+<meta name="referrer" content="no-referrer">
 <title>Pré check-in — Hostel Clean</title>
 
 <!-- Tipografia -->
@@ -160,6 +162,7 @@
     outline: none;
     transition: border-color .15s, box-shadow .15s;
   }
+  input[type="email"]:focus,
   input:focus, select:focus {
     border-color: var(--azul);
     box-shadow: 0 0 0 3px rgba(14,98,145,.12);
@@ -283,6 +286,88 @@
   }
   .botao-livro:hover { background: var(--azul-claro); transform: translateY(-1px); }
 
+  /* ---------- ESTADOS (a carregar / link inválido) ---------- */
+  .estado { text-align: center; padding: 40px 24px; }
+  .estado p { margin: 12px 0 0; color: var(--texto-sec); font-size: 15px; }
+  .estado h2 { font-size: 19px; margin-top: 14px; }
+  .roda {
+    width: 36px; height: 36px; margin: 0 auto;
+    border: 3px solid var(--borda); border-top-color: var(--azul);
+    border-radius: 50%; animation: gira 1s linear infinite;
+  }
+  @keyframes gira { to { transform: rotate(360deg); } }
+  .icone {
+    width: 54px; height: 54px; margin: 0 auto;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px; font-weight: 700;
+  }
+  .icone-aviso {
+    background: var(--aviso-fundo); color: var(--aviso-texto);
+    border: 1px solid var(--aviso-borda);
+  }
+  .icone-ok {
+    background: #fff; color: var(--verde); border: 1px solid var(--verde);
+    margin-bottom: 12px;
+  }
+  .botao-secundario {
+    margin-top: 18px;
+    padding: 12px 20px;
+    font: inherit; font-weight: 600; font-size: 15px;
+    color: var(--azul); background: #fff;
+    border: 1px solid var(--azul); border-radius: 10px;
+    cursor: pointer;
+  }
+
+  /* ---------- A SUA RESERVA ---------- */
+  .reserva { display: grid; gap: 14px; }
+  .reserva-par {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+  }
+  .reserva .rotulo {
+    display: block;
+    font-size: 12px; letter-spacing: .6px; text-transform: uppercase;
+    color: var(--texto-sec);
+  }
+  .reserva .valor { display: block; font-size: 16px; font-weight: 600; color: var(--navy); }
+  .reserva .extra { display: block; font-size: 13px; color: var(--texto-sec); }
+  .regras {
+    margin: 4px 0 0;
+    white-space: pre-line;
+    font-size: 14px; color: var(--texto-sec);
+    background: var(--fundo-app);
+    border: 1px solid var(--borda); border-radius: 10px;
+    padding: 10px 12px;
+  }
+  .nota-acesso {
+    margin: 16px 0 0;
+    font-size: 13px; color: var(--aviso-texto);
+    background: var(--aviso-fundo);
+    border: 1px solid var(--aviso-borda); border-radius: 10px;
+    padding: 10px 12px;
+  }
+
+  /* ---------- EMAIL (só com consentimento) ---------- */
+  .campo-email { margin-top: 14px; }
+  .campo-email input { width: 100%; }
+  .campo-email .dica { display: block; font-size: 12.5px; color: var(--texto-sec); margin-top: 5px; }
+  input[type="email"] {
+    width: 100%; padding: 12px 14px; font-size: 16px; font-family: inherit;
+    color: var(--texto); background: var(--fundo);
+    border: 1px solid var(--borda); border-radius: 10px; outline: none;
+  }
+
+  /* ---------- AVISO DE ENVIO ---------- */
+  .alerta {
+    display: none;
+    background: #FDECEA; border: 1px solid #E8B4AE; color: #7A2A20;
+    border-radius: 12px; padding: 14px 16px;
+    font-size: 14.5px; margin: 0 0 16px;
+  }
+  button[type="submit"]:disabled {
+    background: #9AAAB6; box-shadow: none; transform: none; cursor: wait;
+  }
+
   footer {
     max-width: 1040px;
     margin: 0 auto;
@@ -313,7 +398,63 @@
 <div class="demo">DEMONSTRAÇÃO — não introduza dados reais</div>
 
 <main>
-  <form id="formulario" novalidate>
+  <!-- ============ 1. A CARREGAR ============ -->
+  <section class="cartao estado" id="estado-carregar">
+    <div class="roda" aria-hidden="true"></div>
+    <p>A carregar a sua reserva…</p>
+  </section>
+
+  <!-- ============ 3. LINK INVÁLIDO / SEM LIGAÇÃO ============ -->
+  <section class="cartao estado" id="estado-invalido" style="display:none">
+    <div class="icone icone-aviso" aria-hidden="true">!</div>
+    <h2 id="invalido-titulo">Este link não é válido ou já expirou</h2>
+    <p id="invalido-texto">
+      Se já fez o pré check-in, não precisa de fazer mais nada.<br><br>
+      Caso contrário, peça um link novo pela mensagem do Airbnb.
+    </p>
+    <button type="button" class="botao-secundario" id="botao-repetir"
+            style="display:none">Tentar outra vez</button>
+  </section>
+
+  <form id="formulario" novalidate style="display:none">
+
+    <!-- ============ A SUA RESERVA ============ -->
+    <section class="cartao" id="cartao-reserva" style="display:none">
+      <h2>A sua reserva</h2>
+      <p class="ajuda" style="margin-bottom:16px">
+        Confirme que estes são os dados da sua estadia.
+      </p>
+      <div class="reserva">
+        <div>
+          <span class="rotulo">Alojamento</span>
+          <span class="valor" id="r-unidade"></span>
+        </div>
+        <div>
+          <span class="rotulo">Morada</span>
+          <span class="valor" id="r-morada"></span>
+        </div>
+        <div class="reserva-par">
+          <div>
+            <span class="rotulo">Entrada</span>
+            <span class="valor" id="r-entrada"></span>
+            <span class="extra" id="r-hora-entrada"></span>
+          </div>
+          <div>
+            <span class="rotulo">Saída</span>
+            <span class="valor" id="r-saida"></span>
+            <span class="extra" id="r-hora-saida"></span>
+          </div>
+        </div>
+        <div id="r-bloco-regras" style="display:none">
+          <span class="rotulo">Regras da casa</span>
+          <p class="regras" id="r-regras"></p>
+        </div>
+      </div>
+      <p class="nota-acesso">
+        🔒 O código de acesso é enviado pela mensagem do Airbnb no dia da
+        entrada.
+      </p>
+    </section>
 
     <!-- ============ DADOS ============ -->
     <section class="cartao">
@@ -325,7 +466,7 @@
       <div class="campos">
         <div class="campo largo" data-campo>
           <label for="nome">Nome completo *</label>
-          <input type="text" id="nome" name="nome" autocomplete="name" required>
+          <input type="text" id="nome" name="nome" autocomplete="name" maxlength="150" required>
           <span class="erro-campo">Preencha o nome completo.</span>
         </div>
 
@@ -339,13 +480,13 @@
 
         <div class="campo" data-campo id="campo-outra" style="display:none">
           <label for="nacionalidade_outra">Escreva a nacionalidade *</label>
-          <input type="text" id="nacionalidade_outra" name="nacionalidade_outra">
+          <input type="text" id="nacionalidade_outra" name="nacionalidade_outra" maxlength="100">
           <span class="erro-campo">Escreva a nacionalidade.</span>
         </div>
 
         <div class="campo" data-campo>
           <label for="data_nascimento">Data de nascimento *</label>
-          <input type="date" id="data_nascimento" name="data_nascimento" required>
+          <input type="date" id="data_nascimento" name="data_nascimento" min="1900-01-01" required>
           <span class="erro-campo">Indique a data de nascimento.</span>
         </div>
 
@@ -363,21 +504,21 @@
 
         <div class="campo" data-campo>
           <label for="numero_documento">Número do documento *</label>
-          <input type="text" id="numero_documento" name="numero_documento" required>
+          <input type="text" id="numero_documento" name="numero_documento" maxlength="50" required>
           <span class="erro-campo">Preencha o número do documento.</span>
         </div>
 
         <div class="campo" data-campo>
           <label for="pais_emissor">País emissor do documento *</label>
           <input type="text" id="pais_emissor" name="pais_emissor"
-                 placeholder="ex.: Portugal" required>
+                 placeholder="ex.: Portugal" maxlength="100" required>
           <span class="erro-campo">Preencha o país emissor.</span>
         </div>
 
         <div class="campo largo" data-campo>
           <label for="pais_residencia">País de residência *</label>
           <input type="text" id="pais_residencia" name="pais_residencia"
-                 placeholder="ex.: Portugal" required>
+                 placeholder="ex.: Portugal" maxlength="100" required>
           <span class="erro-campo">Preencha o país de residência.</span>
         </div>
       </div>
@@ -486,14 +627,27 @@
           <span class="base">Consentimento · artigo 6.º/1/a — revogável</span>
         </span>
       </label>
+      <!-- Fora da <label> da caixa: clicar no campo não pode desmarcá-la. -->
+      <div class="campo campo-email" id="campo-email" style="display:none">
+        <label for="email">O seu email *</label>
+        <input type="email" id="email" name="email" autocomplete="email"
+               maxlength="254" inputmode="email">
+        <span class="erro-campo">Escreva um email válido.</span>
+        <span class="dica">
+          Só pedimos o email porque aceitou receber comunicações.
+        </span>
+      </div>
     </section>
 
-    <button type="submit">Concluir pré check-in</button>
+    <div class="alerta" id="alerta-envio" role="alert"></div>
+    <button type="submit" id="botao-enviar">Concluir pré check-in</button>
   </form>
 
   <section class="sucesso" id="sucesso">
+    <div class="icone icone-ok" aria-hidden="true">✓</div>
     <h2>Pré check-in concluído</h2>
     <p id="sucesso-detalhe"></p>
+    <p id="sucesso-reserva" style="font-size:13.5px;margin-top:10px"></p>
     <a id="link-livro" class="botao-livro" href="livro.html">
       Ver informações da estadia →
     </a>
@@ -502,8 +656,8 @@
 
 <footer>
   Versão do aviso de privacidade: <span id="versao-rodape"></span>.
-  Esta página não guarda os seus dados em servidor nenhum enquanto a
-  preenche.
+  Os dados só são enviados quando carrega em «Concluir», por ligação
+  segura (HTTPS).
 </footer>
 
 <script>
@@ -512,10 +666,19 @@
 // =====================================================================
 const VERSAO_AVISO = "1.0";
 
-// "ficheiro" gera um ficheiro no dispositivo (fase de demonstração);
-// "api" faz POST para o servidor.
-const ENVIO = "ficheiro";
-const URL_API = "https://«DOMINIO»/api/pre-checkin";
+// "api": fala com a API do Hostel Gestão (pré check-in real).
+// "ficheiro": demonstração sem servidor — gera um ficheiro JSON no
+// dispositivo e não mostra o cartão da reserva.
+const ENVIO = "api";
+
+// Endereço público da API (Tailscale Funnel → nova-vm, porta 8000).
+const URL_API = "https://nova-vm.tailce9342.ts.net/api";
+
+// Mesmo formato que a API aceita (Pydantic): 20 a 100 caracteres
+// A-Z a-z 0-9 - _. Um token com outro formato nem chega a ser enviado.
+const FORMATO_TOKEN = /^[A-Za-z0-9_-]{20,100}$/;
+// Mesma regra de email da API.
+const FORMATO_EMAIL = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
 const NACIONALIDADES = [
   "Portuguesa", "Brasileira", "Espanhola", "Francesa", "Alemã",
@@ -530,21 +693,151 @@ const OUTRA = "Outra";
 // =====================================================================
 // ARRANQUE
 // =====================================================================
-const seletorNac = document.getElementById("nacionalidade");
+const $ = (id) => document.getElementById(id);
+
+const seletorNac = $("nacionalidade");
 NACIONALIDADES.concat([OUTRA]).forEach((n) => {
   const opcao = document.createElement("option");
   opcao.textContent = n;
   seletorNac.appendChild(opcao);
 });
 
-document.getElementById("versao-rodape").textContent = VERSAO_AVISO;
+$("versao-rodape").textContent = VERSAO_AVISO;
+$("data_nascimento").max = new Date().toISOString().slice(0, 10);
 
-const campoOutra = document.getElementById("campo-outra");
+const campoOutra = $("campo-outra");
 seletorNac.addEventListener("change", () => {
   campoOutra.style.display = seletorNac.value === OUTRA ? "" : "none";
 });
 
+// O email só existe com o consentimento de comunicações. Desmarcar a
+// caixa esconde o campo E apaga o que lá estava (não fica nada
+// escrito que depois pudesse ser enviado).
+const caixaComunicacoes = $("comunicacoes");
+const campoEmail = $("campo-email");
+caixaComunicacoes.addEventListener("change", () => {
+  campoEmail.style.display = caixaComunicacoes.checked ? "" : "none";
+  if (!caixaComunicacoes.checked) {
+    $("email").value = "";
+    marcar(campoEmail, false);
+  }
+});
+
 const token = new URLSearchParams(location.search).get("t") || "";
+
+// Detalhes da reserva devolvidos pela API (usados também no fim).
+let reserva = null;
+
+// =====================================================================
+// ESTADOS DA PÁGINA
+// =====================================================================
+function mostrar(estado) {
+  $("estado-carregar").style.display = estado === "carregar" ? "" : "none";
+  $("estado-invalido").style.display = estado === "invalido" ? "" : "none";
+  $("formulario").style.display = estado === "formulario" ? "" : "none";
+  $("sucesso").style.display = estado === "sucesso" ? "block" : "none";
+}
+
+function linkInvalido() {
+  $("invalido-titulo").textContent = "Este link não é válido ou já expirou";
+  $("invalido-texto").innerHTML =
+    "Se já fez o pré check-in, não precisa de fazer mais nada.<br><br>" +
+    "Caso contrário, peça um link novo pela mensagem do Airbnb.";
+  $("botao-repetir").style.display = "none";
+  mostrar("invalido");
+}
+
+function semLigacao() {
+  $("invalido-titulo").textContent = "Não foi possível carregar a reserva";
+  $("invalido-texto").textContent =
+    "Verifique a ligação à internet e tente outra vez daqui a pouco.";
+  $("botao-repetir").style.display = "";
+  mostrar("invalido");
+}
+
+// =====================================================================
+// DATAS (a API devolve "AAAA-MM-DD")
+// =====================================================================
+function paraData(texto) {
+  const [ano, mes, dia] = texto.split("-").map(Number);
+  return new Date(ano, mes - 1, dia);   // data local, sem fuso
+}
+
+// Nomes escritos aqui (e não pelo toLocaleDateString) para o texto
+// sair igual em todos os telemóveis e browsers.
+const DIAS = ["domingo", "segunda", "terça", "quarta", "quinta",
+              "sexta", "sábado"];
+const DIAS_CURTOS = ["dom", "seg", "ter", "qua", "qui", "sex", "sáb"];
+const MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho",
+               "julho", "agosto", "setembro", "outubro", "novembro",
+               "dezembro"];
+
+function dataCurta(texto) {        // "sáb, 10 out 2026"
+  const d = paraData(texto);
+  return DIAS_CURTOS[d.getDay()] + ", " + d.getDate() + " " +
+         MESES[d.getMonth()].slice(0, 3) + " " + d.getFullYear();
+}
+
+function dataLonga(texto) {        // "sábado, 10 de outubro"
+  const d = paraData(texto);
+  return DIAS[d.getDay()] + ", " + d.getDate() + " de " +
+         MESES[d.getMonth()];
+}
+
+// =====================================================================
+// 1. CARREGAR A RESERVA
+// =====================================================================
+async function pedirApi(caminho, corpo) {
+  return fetch(URL_API + caminho, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(corpo),
+  });
+}
+
+function preencherReserva(r) {
+  // textContent e nunca innerHTML: o que vem da API é mostrado como
+  // texto, mesmo que tivesse "<script>" lá dentro.
+  $("r-unidade").textContent = r.unidade;
+  $("r-morada").textContent = r.morada;
+  $("r-entrada").textContent = dataCurta(r.data_entrada);
+  $("r-saida").textContent = dataCurta(r.data_saida);
+  $("r-hora-entrada").textContent = "a partir das " + r.hora_checkin;
+  $("r-hora-saida").textContent = "até às " + r.hora_checkout;
+  if (r.regras) {
+    $("r-regras").textContent = r.regras;
+    $("r-bloco-regras").style.display = "";
+  }
+  $("cartao-reserva").style.display = "";
+}
+
+async function carregarReserva() {
+  if (ENVIO !== "api") {
+    mostrar("formulario");
+    return;
+  }
+  if (!FORMATO_TOKEN.test(token)) {
+    linkInvalido();
+    return;
+  }
+
+  mostrar("carregar");
+  try {
+    const resposta = await pedirApi("/reserva", { token: token });
+    if (resposta.status === 404 || resposta.status === 422) {
+      linkInvalido();
+      return;
+    }
+    if (!resposta.ok) { throw new Error("resposta " + resposta.status); }
+    reserva = await resposta.json();
+    preencherReserva(reserva);
+    mostrar("formulario");
+  } catch (erro) {
+    semLigacao();
+  }
+}
+
+$("botao-repetir").addEventListener("click", carregarReserva);
 
 // =====================================================================
 // VALIDAÇÃO
@@ -572,6 +865,12 @@ function validar() {
     if (!marcada && !primeiroErro) { primeiroErro = caixa; }
   });
 
+  if (caixaComunicacoes.checked) {
+    const emailMau = !FORMATO_EMAIL.test($("email").value.trim());
+    marcar(campoEmail, emailMau);
+    if (emailMau && !primeiroErro) { primeiroErro = campoEmail; }
+  }
+
   if (primeiroErro) {
     primeiroErro.scrollIntoView({ behavior: "smooth", block: "center" });
     return false;
@@ -584,32 +883,33 @@ function validar() {
 // =====================================================================
 function recolher() {
   const nac = seletorNac.value === OUTRA
-    ? document.getElementById("nacionalidade_outra").value.trim()
+    ? $("nacionalidade_outra").value.trim()
     : seletorNac.value;
 
-  return {
+  const dados = {
     token: token,
     versao_aviso: VERSAO_AVISO,
     submetido_em: new Date().toISOString(),
     cliente: {
-      nome: document.getElementById("nome").value.trim(),
+      nome: $("nome").value.trim(),
       nacionalidade: nac,
-      data_nascimento: document.getElementById("data_nascimento").value,
-      tipo_documento: document.getElementById("tipo_documento").value,
-      numero_documento:
-        document.getElementById("numero_documento").value.trim(),
-      pais_emissor_documento:
-        document.getElementById("pais_emissor").value.trim(),
-      pais_residencia:
-        document.getElementById("pais_residencia").value.trim(),
+      data_nascimento: $("data_nascimento").value,
+      tipo_documento: $("tipo_documento").value,
+      numero_documento: $("numero_documento").value.trim(),
+      pais_emissor_documento: $("pais_emissor").value.trim(),
+      pais_residencia: $("pais_residencia").value.trim(),
     },
     confirmacoes: {
-      informado_privacidade: document.getElementById("informado").checked,
-      aceitou_regulamento: document.getElementById("regulamento").checked,
-      consente_comunicacoes:
-        document.getElementById("comunicacoes").checked,
+      informado_privacidade: $("informado").checked,
+      aceitou_regulamento: $("regulamento").checked,
+      consente_comunicacoes: caixaComunicacoes.checked,
     },
   };
+  // Sem consentimento, o campo "email" nem vai no pedido.
+  if (caixaComunicacoes.checked) {
+    dados.email = $("email").value.trim();
+  }
+  return dados;
 }
 
 function gerarFicheiro(dados) {
@@ -625,28 +925,42 @@ function gerarFicheiro(dados) {
   URL.revokeObjectURL(ligacao.href);
 }
 
-async function enviarApi(dados) {
-  const resposta = await fetch(URL_API, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(dados),
-  });
-  if (!resposta.ok) { throw new Error("resposta " + resposta.status); }
+function mostrarAlerta(texto) {
+  const alerta = $("alerta-envio");
+  alerta.textContent = texto;
+  alerta.style.display = texto ? "block" : "none";
 }
 
 function concluir(detalhe) {
-  document.getElementById("formulario").style.display = "none";
-  document.getElementById("sucesso-detalhe").textContent = detalhe;
-
-  const link = document.getElementById("link-livro");
+  $("sucesso-detalhe").textContent = detalhe;
+  if (reserva) {
+    $("sucesso-reserva").textContent =
+      reserva.unidade + " · entrada a partir das " + reserva.hora_checkin;
+  }
+  const link = $("link-livro");
   link.href = "livro.html" + (token ? "?t=" + encodeURIComponent(token) : "");
 
-  document.getElementById("sucesso").style.display = "block";
+  mostrar("sucesso");
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-document.getElementById("formulario").addEventListener("submit", async (e) => {
+// Respostas da API → o que o hóspede vê.
+const MENSAGENS = {
+  422: "Alguns dados não foram aceites. Verifique os campos e tente outra vez.",
+  429: "Fez vários pedidos seguidos. Aguarde um minuto e tente outra vez.",
+  413: "Os dados enviados são demasiado grandes. Verifique os campos.",
+};
+const MENSAGEM_REDE =
+  "Não foi possível enviar. Os dados que escreveu não se perderam — " +
+  "verifique a ligação à internet e carregue outra vez no botão.";
+
+const botaoEnviar = $("botao-enviar");
+let aEnviar = false;   // marca contra o duplo clique
+
+$("formulario").addEventListener("submit", async (e) => {
   e.preventDefault();
+  if (aEnviar) { return; }
+  mostrarAlerta("");
   if (!validar()) { return; }
 
   const dados = recolher();
@@ -658,13 +972,33 @@ document.getElementById("formulario").addEventListener("submit", async (e) => {
     return;
   }
 
+  aEnviar = true;
+  botaoEnviar.disabled = true;
+  botaoEnviar.textContent = "A enviar…";
   try {
-    await enviarApi(dados);
-    concluir("Os seus dados ficaram registados. Até breve.");
+    const resposta = await pedirApi("/pre-checkin", dados);
+    if (resposta.status === 201) {
+      const frase = reserva
+        ? "Os seus dados ficaram registados. Até " +
+          dataLonga(reserva.data_entrada) + "!"
+        : "Os seus dados ficaram registados. Até breve.";
+      concluir(frase);
+      return;
+    }
+    if (resposta.status === 404) {   // link usado/expirado entretanto
+      linkInvalido();
+      return;
+    }
+    mostrarAlerta(MENSAGENS[resposta.status] || MENSAGEM_REDE);
   } catch (erro) {
-    alert("Não foi possível enviar. Tente novamente mais tarde.");
+    mostrarAlerta(MENSAGEM_REDE);
   }
+  aEnviar = false;
+  botaoEnviar.disabled = false;
+  botaoEnviar.textContent = "Tentar outra vez";
 });
+
+carregarReserva();
 </script>
 
 </body>
